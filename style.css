@@ -1,6 +1,6 @@
-/* =========================================
-   GharLink — Complete UI
-========================================= */
+/* =========================================================
+   GHARLINK — COMPLETE UI
+========================================================= */
 
 * {
     margin: 0;
@@ -14,12 +14,17 @@
     --text: #222222;
     --muted: #85858d;
     --border: #e5e5e8;
+
     --accent: #ec4d47;
     --soft-accent: #fff0ef;
+
     --success: #19a974;
     --danger: #ec4d47;
+
     --input: #f7f7f8;
-    --shadow: 0 8px 25px rgba(25, 25, 35, 0.06);
+
+    --shadow:
+        0 8px 25px rgba(25, 25, 35, 0.06);
 }
 
 body.dark {
@@ -30,7 +35,9 @@ body.dark {
     --border: #323235;
     --input: #29292b;
     --soft-accent: #352120;
-    --shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+
+    --shadow:
+        0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 html {
@@ -41,8 +48,17 @@ body {
     min-height: 100vh;
     background: var(--bg);
     color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
-    transition: background 0.2s ease, color 0.2s ease;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+
+    overflow-x: hidden;
 }
 
 button,
@@ -56,11 +72,18 @@ button {
     cursor: pointer;
 }
 
+input,
+textarea {
+    outline: none;
+}
+
 svg {
     width: 22px;
     height: 22px;
+
     fill: none;
     stroke: currentColor;
+
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -73,12 +96,15 @@ svg {
 }
 
 
-/* APP */
+/* =========================================================
+   APP
+========================================================= */
 
 .app {
     width: 100%;
     max-width: 520px;
     min-height: 100vh;
+
     margin: auto;
     padding-bottom: 100px;
 }
@@ -93,21 +119,27 @@ svg {
 }
 
 
-/* HEADERS */
+/* =========================================================
+   HEADERS
+========================================================= */
 
 .top-header,
 .page-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     margin-bottom: 24px;
 }
 
 .small-label {
     color: var(--muted);
+
     font-size: 10px;
     font-weight: 700;
+
     letter-spacing: 1.5px;
+
     margin-bottom: 5px;
 }
 
@@ -115,24 +147,31 @@ svg {
 .page-header h1 {
     font-size: 28px;
     line-height: 1.1;
+
     letter-spacing: -0.7px;
 }
 
 #currentDate {
     color: var(--muted);
+
     font-size: 12px;
+
     margin-top: 7px;
 }
 
 .header-badge {
     width: 46px;
     height: 46px;
+
     border-radius: 15px;
+
     background: var(--card);
     color: var(--accent);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     box-shadow: var(--shadow);
 }
 
@@ -145,18 +184,26 @@ svg {
 }
 
 
-/* WELCOME */
+/* =========================================================
+   WELCOME
+========================================================= */
 
 .welcome-card {
     min-height: 135px;
+
     padding: 23px;
+
     border-radius: 22px;
+
     background: var(--accent);
     color: white;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 12px 30px rgba(236, 77, 71, 0.18);
+
+    box-shadow:
+        0 12px 30px rgba(236, 77, 71, 0.18);
 }
 
 .welcome-card div {
@@ -171,30 +218,38 @@ svg {
 
 .welcome-card strong {
     font-size: 27px;
+
     margin: 3px 0 8px;
+
     letter-spacing: -0.7px;
 }
 
 .welcome-card small {
     max-width: 210px;
+
     font-size: 11px;
     line-height: 1.4;
+
     opacity: 0.85;
 }
 
 .welcome-card > svg {
     width: 62px;
     height: 62px;
+
     opacity: 0.17;
 }
 
 
-/* SECTION */
+/* =========================================================
+   SECTION TITLE
+========================================================= */
 
 .section-title {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     margin: 25px 2px 13px;
 }
 
@@ -203,31 +258,42 @@ svg {
 }
 
 
-/* HOME STATS */
+/* =========================================================
+   HOME STATS
+========================================================= */
 
 .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+
     gap: 10px;
+
     margin-top: 14px;
 }
 
 .stat-card {
     background: var(--card);
+
     border-radius: 17px;
+
     padding: 14px;
+
     box-shadow: var(--shadow);
 }
 
 .stat-icon {
     width: 32px;
     height: 32px;
+
     border-radius: 10px;
+
     background: var(--soft-accent);
     color: var(--accent);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     margin-bottom: 11px;
 }
 
@@ -238,8 +304,11 @@ svg {
 
 .stat-card span {
     display: block;
+
     color: var(--muted);
+
     font-size: 10px;
+
     margin-bottom: 5px;
 }
 
@@ -248,23 +317,33 @@ svg {
 }
 
 
-/* QUICK */
+/* =========================================================
+   QUICK ACCESS
+========================================================= */
 
 .quick-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+
     gap: 11px;
 }
 
 .quick-card {
     min-height: 125px;
+
     padding: 16px;
+
     text-align: left;
+
     background: var(--card);
     color: var(--text);
+
     border-radius: 18px;
+
     box-shadow: var(--shadow);
-    transition: transform 0.15s ease;
+
+    transition:
+        transform 0.15s ease;
 }
 
 .quick-card:active {
@@ -274,12 +353,16 @@ svg {
 .icon-box {
     width: 40px;
     height: 40px;
+
     border-radius: 13px;
+
     background: var(--soft-accent);
     color: var(--accent);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     margin-bottom: 16px;
 }
 
@@ -290,35 +373,49 @@ svg {
 
 .quick-card strong {
     display: block;
+
     font-size: 14px;
+
     margin-bottom: 4px;
 }
 
 .quick-card span {
     color: var(--muted);
+
     font-size: 10px;
 }
 
 
-/* EMPTY */
+/* =========================================================
+   EMPTY CARD
+========================================================= */
 
 .empty-card {
     background: var(--card);
+
     border-radius: 18px;
+
     padding: 16px;
+
     display: flex;
     align-items: center;
+
     gap: 13px;
+
     box-shadow: var(--shadow);
 }
 
 .empty-icon {
     width: 42px;
     height: 42px;
+
     flex-shrink: 0;
+
     border-radius: 13px;
+
     background: var(--soft-accent);
     color: var(--accent);
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -330,29 +427,39 @@ svg {
 
 .empty-card strong {
     display: block;
+
     font-size: 13px;
+
     margin-bottom: 4px;
 }
 
 .empty-card p {
     color: var(--muted);
+
     font-size: 10px;
     line-height: 1.4;
 }
 
 
-/* BUTTONS */
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 .round-button {
     width: 44px;
     height: 44px;
+
     border-radius: 14px;
+
     background: var(--accent);
     color: white;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 7px 18px rgba(236, 77, 71, 0.2);
+
+    box-shadow:
+        0 7px 18px rgba(236, 77, 71, 0.2);
 }
 
 .round-button svg {
@@ -361,15 +468,22 @@ svg {
 
 .primary-button {
     width: 100%;
+
     min-height: 48px;
+
     margin-top: 18px;
+
     border-radius: 14px;
+
     background: var(--accent);
     color: white;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 8px;
+
     font-size: 13px;
     font-weight: 700;
 }
@@ -380,17 +494,28 @@ svg {
 
 .secondary-button {
     width: 100%;
+
     min-height: 46px;
+
     border-radius: 13px;
+
     background: var(--input);
-    border: 1px solid var(--border);
     color: var(--text);
+
+    border: 1px solid var(--border);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 7px;
+
     font-size: 12px;
     font-weight: 700;
+}
+
+.secondary-button svg {
+    width: 17px;
 }
 
 .secondary-button.danger {
@@ -398,28 +523,38 @@ svg {
 }
 
 
-/* TASK SUMMARY */
+/* =========================================================
+   TASK SUMMARY
+========================================================= */
 
 .task-summary {
     display: grid;
     grid-template-columns: 1fr 1fr;
+
     gap: 11px;
+
     margin-bottom: 14px;
 }
 
 .task-summary > div,
 .bill-overview > div {
     background: var(--card);
+
     border-radius: 17px;
+
     padding: 16px;
+
     box-shadow: var(--shadow);
 }
 
 .task-summary span,
 .bill-overview span {
     display: block;
+
     color: var(--muted);
+
     font-size: 10px;
+
     margin-bottom: 6px;
 }
 
@@ -429,35 +564,49 @@ svg {
 }
 
 
-/* TASKS */
+/* =========================================================
+   TASK LIST
+========================================================= */
 
 .task-list {
     display: flex;
     flex-direction: column;
+
     gap: 10px;
 }
 
 .task-item {
     background: var(--card);
+
     border-radius: 17px;
+
     padding: 12px;
+
     display: flex;
     align-items: center;
+
     gap: 11px;
+
     box-shadow: var(--shadow);
 }
 
 .task-check {
     width: 38px;
     height: 38px;
+
     flex-shrink: 0;
+
     border-radius: 12px;
+
     border: 1.5px solid var(--border);
+
     background: var(--card);
     color: white;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 17px;
     font-weight: 700;
 }
@@ -474,15 +623,20 @@ svg {
 
 .task-content strong {
     display: block;
+
     font-size: 13px;
     line-height: 1.35;
+
     word-break: break-word;
 }
 
 .task-content span {
     display: block;
+
     color: var(--muted);
+
     font-size: 9px;
+
     margin-top: 4px;
 }
 
@@ -499,9 +653,12 @@ svg {
 .task-actions button {
     width: 31px;
     height: 31px;
+
     border-radius: 9px;
+
     background: transparent;
     color: var(--muted);
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -516,34 +673,45 @@ svg {
     color: var(--danger);
 }
 
-.task-item.overdue .task-content span {
-    color: var(--danger);
+.task-item.overdue {
+    border: 1px solid rgba(236, 77, 71, 0.28);
 }
 
 
-/* BILLS */
+/* =========================================================
+   BILLS
+========================================================= */
 
 .bill-overview {
     display: grid;
     grid-template-columns: 1fr 1fr;
+
     gap: 11px;
+
     margin-bottom: 5px;
 }
 
 .bill-list {
     display: flex;
     flex-direction: column;
+
     gap: 10px;
 }
 
 .bill-card {
     background: var(--card);
+
     border-radius: 17px;
+
     padding: 15px;
+
     box-shadow: var(--shadow);
+
     display: flex;
     align-items: center;
+
     gap: 12px;
+
     cursor: pointer;
 }
 
@@ -554,12 +722,16 @@ svg {
 .bill-card-icon {
     width: 42px;
     height: 42px;
+
     border-radius: 13px;
+
     background: var(--soft-accent);
     color: var(--accent);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     flex-shrink: 0;
 }
 
@@ -574,52 +746,78 @@ svg {
 
 .bill-card-info strong {
     display: block;
+
     font-size: 13px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .bill-card-info span {
     display: block;
+
     color: var(--muted);
+
     font-size: 9px;
+
     margin-top: 4px;
+
+    line-height: 1.4;
 }
 
 .bill-card-amount {
     font-size: 14px;
     font-weight: 700;
+
     white-space: nowrap;
 }
 
 
-/* MORE */
+/* =========================================================
+   MORE
+========================================================= */
 
 .more-list {
     display: flex;
     flex-direction: column;
+
     gap: 10px;
 }
 
 .more-item {
     width: 100%;
+
     min-height: 70px;
+
     padding: 11px 13px;
+
     border-radius: 17px;
+
     background: var(--card);
     color: var(--text);
+
     display: flex;
     align-items: center;
+
     gap: 13px;
+
     text-align: left;
+
     box-shadow: var(--shadow);
 }
 
 .more-icon {
     width: 42px;
     height: 42px;
+
     flex-shrink: 0;
+
     border-radius: 13px;
+
     background: var(--soft-accent);
     color: var(--accent);
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -635,49 +833,73 @@ svg {
 
 .more-item strong {
     display: block;
+
     font-size: 13px;
+
     margin-bottom: 4px;
 }
 
 .more-item span {
     color: var(--muted);
+
     font-size: 10px;
 }
 
 .more-arrow {
     width: 18px;
+
     color: #aaaab0;
 }
 
 
-/* BOTTOM NAV */
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
 
 .bottom-nav {
     position: fixed;
+
     z-index: 100;
+
     left: 50%;
     bottom: 12px;
+
     transform: translateX(-50%);
+
     width: calc(100% - 24px);
     max-width: 496px;
+
     height: 68px;
+
     padding: 7px;
+
     border: 1px solid var(--border);
+
     border-radius: 22px;
+
     background: var(--card);
-    box-shadow: 0 12px 35px rgba(20, 20, 30, 0.10);
+
+    box-shadow:
+        0 12px 35px rgba(20, 20, 30, 0.10);
+
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+
+    grid-template-columns:
+        repeat(4, 1fr);
 }
 
 .nav-item {
     border-radius: 17px;
+
     background: transparent;
     color: var(--muted);
+
     display: flex;
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
+
     gap: 4px;
 }
 
@@ -697,15 +919,23 @@ svg {
 }
 
 
-/* MODALS */
+/* =========================================================
+   MODAL
+========================================================= */
 
 .modal {
     position: fixed;
+
     z-index: 200;
+
     inset: 0;
+
     padding: 18px;
+
     background: rgba(0, 0, 0, 0.48);
+
     display: none;
+
     align-items: flex-end;
     justify-content: center;
 }
@@ -716,14 +946,22 @@ svg {
 
 .modal-card {
     width: 100%;
+
     max-width: 490px;
     max-height: 90vh;
+
     overflow-y: auto;
+
     padding: 20px;
+
     border-radius: 24px;
+
     background: var(--card);
     color: var(--text);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.2);
+
     animation: modalIn 0.2s ease;
 }
 
@@ -741,8 +979,10 @@ svg {
 
 .modal-header {
     display: flex;
+
     align-items: flex-start;
     justify-content: space-between;
+
     margin-bottom: 20px;
 }
 
@@ -753,9 +993,14 @@ svg {
 .close-button {
     width: 36px;
     height: 36px;
+
+    flex-shrink: 0;
+
     border-radius: 11px;
+
     background: var(--input);
     color: var(--muted);
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -766,7 +1011,9 @@ svg {
 }
 
 
-/* FORMS */
+/* =========================================================
+   FORMS
+========================================================= */
 
 #taskForm,
 #billForm {
@@ -776,31 +1023,40 @@ svg {
 
 label {
     color: var(--text);
+
     font-size: 11px;
     font-weight: 700;
+
     margin: 0 0 7px;
 }
 
 input,
 textarea {
     width: 100%;
-    padding: 12px 13px;
+
+    min-height: 46px;
+
+    padding: 0 13px;
+
     margin-bottom: 16px;
+
     border: 1px solid var(--border);
+
     border-radius: 13px;
-    outline: none;
+
     background: var(--input);
     color: var(--text);
+
     font-size: 12px;
 }
 
-input {
-    min-height: 46px;
-}
-
 textarea {
+    min-height: 110px;
+
+    padding-top: 12px;
+    padding-bottom: 12px;
+
     resize: vertical;
-    line-height: 1.5;
 }
 
 input:focus,
@@ -814,20 +1070,26 @@ textarea::placeholder {
 }
 
 
-/* BILL FORM */
+/* =========================================================
+   BILL FORM
+========================================================= */
 
 .form-row {
     display: flex;
+
     align-items: flex-end;
-    gap: 9px;
+
+    gap: 7px;
 }
 
 .form-field {
     flex: 1;
+
+    min-width: 0;
 }
 
 .small-field {
-    max-width: 90px;
+    max-width: 72px;
 }
 
 .form-row input {
@@ -835,82 +1097,114 @@ textarea::placeholder {
 }
 
 .add-product-button {
-    min-width: 72px;
+    min-width: 67px;
+
     height: 46px;
+
     margin-bottom: 16px;
+
     border-radius: 13px;
+
     background: var(--soft-accent);
     color: var(--accent);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 4px;
-    font-size: 11px;
+
+    font-size: 10px;
     font-weight: 700;
+
+    flex-shrink: 0;
 }
 
 .add-product-button svg {
     width: 15px;
 }
 
-.bill-products {
+#billProducts {
     display: flex;
     flex-direction: column;
+
     gap: 8px;
+
     margin-top: 2px;
 }
 
 .bill-empty {
     padding: 15px;
+
     text-align: center;
+
     border: 1px dashed var(--border);
+
     border-radius: 13px;
+
     color: var(--muted);
+
     font-size: 10px;
 }
 
 .product-row {
     padding: 11px;
+
     border-radius: 13px;
+
     background: var(--input);
+
     display: flex;
+
     align-items: center;
+
     gap: 10px;
 }
 
 .product-info {
     flex: 1;
+
     min-width: 0;
 }
 
 .product-info strong {
     display: block;
+
     font-size: 12px;
+
     word-break: break-word;
 }
 
 .product-info span {
     display: block;
+
     color: var(--muted);
+
     font-size: 9px;
+
     margin-top: 3px;
 }
 
 .product-price {
     font-size: 12px;
     font-weight: 700;
+
     white-space: nowrap;
 }
 
 .remove-product {
     width: 27px;
     height: 27px;
+
     border-radius: 8px;
+
     background: transparent;
     color: var(--danger);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     flex-shrink: 0;
 }
 
@@ -920,15 +1214,21 @@ textarea::placeholder {
 
 .bill-total {
     margin-top: 15px;
+
     padding-top: 15px;
+
     border-top: 1px solid var(--border);
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
 }
 
 .bill-total span {
     color: var(--muted);
+
     font-size: 12px;
 }
 
@@ -937,74 +1237,124 @@ textarea::placeholder {
 }
 
 
-/* DETAIL */
+/* =========================================================
+   BILL DETAILS
+========================================================= */
+
+.bill-customer {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+.bill-customer span {
+    text-align: right;
+}
+
+.bill-detail-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+
+    margin-top: 16px;
+}
+
+.bill-detail-actions button {
+    min-height: 46px;
+
+    margin-top: 0;
+
+    font-size: 10px;
+}
+
+.bill-detail-actions svg {
+    width: 16px;
+}
+
+
+/* =========================================================
+   DETAIL CONTENT
+========================================================= */
 
 .detail-box {
     background: var(--input);
+
     padding: 15px;
+
     border-radius: 15px;
+
     margin-bottom: 10px;
 }
 
 .detail-box strong {
     display: block;
+
     font-size: 13px;
+
     margin-bottom: 5px;
 }
 
 .detail-box span {
     color: var(--muted);
+
     font-size: 10px;
+
     line-height: 1.5;
-}
 
-.bill-detail-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-top: 18px;
-}
-
-.bill-detail-actions .primary-button,
-.bill-detail-actions .secondary-button {
-    margin-top: 0;
-}
-
-.bill-detail-actions .edit-button {
-    color: var(--accent);
+    white-space: pre-wrap;
 }
 
 
-/* SETTINGS */
+/* =========================================================
+   SETTINGS
+========================================================= */
 
 .settings-section {
     background: var(--card);
+
     border-radius: 18px;
+
     padding: 16px;
+
     box-shadow: var(--shadow);
 }
 
 .theme-options {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 10px;
 }
 
 .theme-option {
     min-height: 80px;
+
     border: 1px solid var(--border);
+
     border-radius: 14px;
+
     background: var(--input);
     color: var(--text);
+
     display: flex;
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
+
     gap: 7px;
 }
 
 .theme-option.active {
     border-color: var(--accent);
+
     color: var(--accent);
 }
 
@@ -1018,42 +1368,58 @@ textarea::placeholder {
 }
 
 
-/* ABOUT */
+/* =========================================================
+   ABOUT
+========================================================= */
 
 .about-card {
     background: var(--card);
+
     padding: 20px;
+
     border-radius: 19px;
+
     box-shadow: var(--shadow);
 }
 
 .about-card h3 {
     font-size: 18px;
+
     margin-bottom: 9px;
 }
 
 .about-card p {
     color: var(--muted);
+
     font-size: 11px;
+
     line-height: 1.65;
+
     margin-bottom: 15px;
 }
 
 .about-divider {
     height: 1px;
+
     background: var(--border);
+
     margin: 15px 0;
 }
 
 .developer-name {
     color: var(--text) !important;
+
     font-size: 13px !important;
+
     font-weight: 700;
+
     margin-bottom: 4px !important;
 }
 
 
-/* RESPONSIVE */
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
 @media (max-width: 360px) {
 
@@ -1073,6 +1439,7 @@ textarea::placeholder {
 
     .quick-card {
         min-height: 115px;
+
         padding: 14px;
     }
 
@@ -1088,13 +1455,28 @@ textarea::placeholder {
         padding: 17px;
     }
 
+    .form-row {
+        gap: 5px;
+    }
+
+    .small-field {
+        max-width: 62px;
+    }
+
+    .add-product-button {
+        min-width: 58px;
+        font-size: 9px;
+    }
+
     .bill-detail-actions {
         grid-template-columns: 1fr;
     }
 }
 
 
-/* DESKTOP */
+/* =========================================================
+   DESKTOP
+========================================================= */
 
 @media (min-width: 700px) {
 
@@ -1111,3 +1493,4 @@ textarea::placeholder {
         border-radius: 24px;
     }
 }
+

@@ -1,9 +1,14 @@
 /* =========================================================
-   GharLink — Complete App JavaScript
-   No alert / confirm / prompt
+   GHARLINK
+   Complete App JavaScript
+
+   No alert()
+   No confirm()
+   No prompt()
 ========================================================= */
 
-const $ = (id) => document.getElementById(id);
+const $ = (id) =>
+    document.getElementById(id);
 
 
 /* =========================================================
@@ -11,28 +16,56 @@ const $ = (id) => document.getElementById(id);
 ========================================================= */
 
 function loadData(key, fallback = []) {
+
     try {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : fallback;
+
+        const data =
+            localStorage.getItem(key);
+
+        return data
+            ? JSON.parse(data)
+            : fallback;
+
     } catch {
+
         return fallback;
     }
 }
 
-let tasks = loadData("gharLinkTasks");
-let bills = loadData("gharLinkBills");
-let family = loadData("gharLinkFamily");
-let notes = loadData("gharLinkNotes");
-let links = loadData("gharLinkLinks");
+
+let tasks =
+    loadData("gharLinkTasks");
+
+let bills =
+    loadData("gharLinkBills");
+
+let family =
+    loadData("gharLinkFamily");
+
+let notes =
+    loadData("gharLinkNotes");
+
+let links =
+    loadData("gharLinkLinks");
+
 
 let theme =
-    localStorage.getItem("gharLinkTheme") || "light";
+    localStorage.getItem(
+        "gharLinkTheme"
+    ) || "light";
+
 
 let currentProducts = [];
+
 let editingBillId = null;
 
 
+/* =========================================================
+   SAVE
+========================================================= */
+
 function save(key, value) {
+
     localStorage.setItem(
         key,
         JSON.stringify(value)
@@ -41,18 +74,26 @@ function save(key, value) {
 
 
 /* =========================================================
-   SMALL APP MESSAGE
+   SMALL MESSAGE
 ========================================================= */
 
-function showMessage(message, type = "success") {
+function showMessage(
+    message,
+    type = "success"
+) {
 
     let toast =
-        document.getElementById("gharLinkToast");
+        document.getElementById(
+            "gharLinkToast"
+        );
+
 
     if (!toast) {
 
         toast =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         toast.id =
             "gharLinkToast";
@@ -61,36 +102,57 @@ function showMessage(message, type = "success") {
             position:fixed;
             left:50%;
             bottom:82px;
-            transform:translateX(-50%) translateY(20px);
+            transform:
+                translateX(-50%)
+                translateY(20px);
+
             width:calc(100% - 32px);
             max-width:420px;
+
             padding:14px 16px;
+
             border-radius:16px;
+
             background:var(--card);
             color:var(--text);
+
             border:1px solid var(--border);
-            box-shadow:0 12px 35px rgba(0,0,0,.18);
+
+            box-shadow:
+                0 12px 35px rgba(0,0,0,.18);
+
             display:flex;
             align-items:center;
+
             gap:10px;
+
             z-index:9999;
+
             opacity:0;
+
             transition:.25s ease;
+
             font-size:14px;
             font-weight:600;
         `;
 
-        document.body.appendChild(toast);
+        document.body.appendChild(
+            toast
+        );
     }
+
 
     toast.innerHTML = `
         <span style="
             width:9px;
             height:9px;
             border-radius:50%;
-            background:${type === "error"
-                ? "#EF4444"
-                : "#10B981"};
+            background:
+                ${
+                    type === "error"
+                        ? "#EF4444"
+                        : "#10B981"
+                };
             flex:none;
         "></span>
 
@@ -98,6 +160,7 @@ function showMessage(message, type = "success") {
             ${escapeHTML(message)}
         </span>
     `;
+
 
     requestAnimationFrame(() => {
 
@@ -107,7 +170,9 @@ function showMessage(message, type = "success") {
             "translateX(-50%) translateY(0)";
     });
 
+
     clearTimeout(toast.timer);
+
 
     toast.timer =
         setTimeout(() => {
@@ -134,10 +199,13 @@ function openConfirm(
     const modal =
         $("detailModal");
 
-    $("detailTitle").textContent =
-        title;
 
-    $("detailContent").innerHTML = `
+    $("detailTitle")
+        .textContent = title;
+
+
+    $("detailContent")
+        .innerHTML = `
 
         <div class="detail-box">
 
@@ -150,6 +218,7 @@ function openConfirm(
             </span>
 
         </div>
+
 
         <div style="
             display:grid;
@@ -166,11 +235,15 @@ function openConfirm(
                 Cancel
             </button>
 
+
             <button
                 type="button"
                 id="acceptConfirm"
                 class="primary-button"
-                style="background:#EF4444;"
+                style="
+                    background:#EF4444;
+                    margin-top:0;
+                "
             >
                 Delete
             </button>
@@ -178,18 +251,28 @@ function openConfirm(
         </div>
     `;
 
+
     modal.classList.add("show");
 
-    $("cancelConfirm").onclick = () => {
-        modal.classList.remove("show");
-    };
 
-    $("acceptConfirm").onclick = () => {
+    $("cancelConfirm").onclick =
+        () => {
 
-        modal.classList.remove("show");
+            modal.classList.remove(
+                "show"
+            );
+        };
 
-        onConfirm();
-    };
+
+    $("acceptConfirm").onclick =
+        () => {
+
+            modal.classList.remove(
+                "show"
+            );
+
+            onConfirm();
+        };
 }
 
 
@@ -198,64 +281,99 @@ function openConfirm(
 ========================================================= */
 
 const screens =
-    document.querySelectorAll(".screen");
+    document.querySelectorAll(
+        ".screen"
+    );
 
 const navItems =
-    document.querySelectorAll(".nav-item");
+    document.querySelectorAll(
+        ".nav-item"
+    );
 
 const quickCards =
-    document.querySelectorAll(".quick-card");
+    document.querySelectorAll(
+        ".quick-card"
+    );
 
 
-function showScreen(screenId) {
+function showScreen(
+    screenId
+) {
 
-    screens.forEach(screen => {
-        screen.classList.remove("active");
-    });
+    screens.forEach(
+        screen => {
+
+            screen.classList.remove(
+                "active"
+            );
+        }
+    );
+
 
     const screen =
         $(screenId);
 
+
     if (screen) {
-        screen.classList.add("active");
+
+        screen.classList.add(
+            "active"
+        );
     }
 
-    navItems.forEach(item => {
 
-        item.classList.toggle(
-            "active",
-            item.dataset.screen === screenId
-        );
+    navItems.forEach(
+        item => {
 
-    });
+            item.classList.toggle(
+                "active",
+                item.dataset.screen ===
+                    screenId
+            );
+        }
+    );
+
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
 
+
     updateHome();
 }
 
 
-navItems.forEach(item => {
+navItems.forEach(
+    item => {
 
-    item.addEventListener(
-        "click",
-        () => showScreen(item.dataset.screen)
-    );
+        item.addEventListener(
+            "click",
+            () => {
 
-});
+                showScreen(
+                    item.dataset.screen
+                );
+            }
+        );
+    }
+);
 
 
-quickCards.forEach(card => {
+quickCards.forEach(
+    card => {
 
-    card.addEventListener(
-        "click",
-        () => showScreen(card.dataset.screen)
-    );
+        card.addEventListener(
+            "click",
+            () => {
 
-});
+                showScreen(
+                    card.dataset.screen
+                );
+            }
+        );
+    }
+);
 
 
 /* =========================================================
@@ -267,7 +385,9 @@ function updateDate() {
     const date =
         new Date();
 
-    $("currentDate").textContent =
+
+    $("currentDate")
+        .textContent =
         date.toLocaleDateString(
             "en-IN",
             {
@@ -286,205 +406,258 @@ updateDate();
    TASKS
 ========================================================= */
 
-function openTaskModal(task = null) {
+function openTaskModal(
+    task = null
+) {
 
-    $("taskModal").classList.add("show");
+    $("taskModal")
+        .classList.add("show");
+
 
     if (task) {
 
-        $("taskModalTitle").textContent =
+        $("taskModalTitle")
+            .textContent =
             "Edit Task";
 
-        $("taskSubmitText").textContent =
+
+        $("taskSubmitText")
+            .textContent =
             "Save Changes";
 
-        $("editingTaskId").value =
-            task.id;
 
-        $("taskName").value =
-            task.name;
+        $("editingTaskId")
+            .value = task.id;
 
-        $("taskDeadline").value =
+
+        $("taskName")
+            .value = task.name;
+
+
+        $("taskDeadline")
+            .value =
             task.deadline;
 
     } else {
 
-        $("taskModalTitle").textContent =
+        $("taskModalTitle")
+            .textContent =
             "Add Task";
 
-        $("taskSubmitText").textContent =
+
+        $("taskSubmitText")
+            .textContent =
             "Add Task";
 
-        $("editingTaskId").value =
-            "";
 
-        $("taskName").value =
-            "";
+        $("editingTaskId")
+            .value = "";
+
+
+        $("taskName")
+            .value = "";
+
 
         const today =
             new Date();
+
 
         today.setMinutes(
             today.getMinutes() -
             today.getTimezoneOffset()
         );
 
-        $("taskDeadline").value =
-            today.toISOString().split("T")[0];
+
+        $("taskDeadline")
+            .value =
+            today
+                .toISOString()
+                .split("T")[0];
     }
 
-    setTimeout(
-        () => $("taskName").focus(),
-        100
-    );
+
+    setTimeout(() => {
+
+        $("taskName").focus();
+
+    }, 100);
 }
 
 
 function closeTaskModal() {
 
-    $("taskModal").classList.remove("show");
+    $("taskModal")
+        .classList.remove(
+            "show"
+        );
+
 
     $("taskForm").reset();
 
-    $("editingTaskId").value =
-        "";
+
+    $("editingTaskId")
+        .value = "";
 }
 
 
-$("addTaskButton").addEventListener(
-    "click",
-    () => openTaskModal()
-);
+$("addTaskButton")
+    .addEventListener(
+        "click",
+        () => openTaskModal()
+    );
 
 
-$("closeTaskModal").addEventListener(
-    "click",
-    closeTaskModal
-);
+$("closeTaskModal")
+    .addEventListener(
+        "click",
+        closeTaskModal
+    );
 
 
-$("taskModal").addEventListener(
-    "click",
-    event => {
+$("taskModal")
+    .addEventListener(
+        "click",
+        event => {
 
-        if (
-            event.target ===
-            $("taskModal")
-        ) {
-            closeTaskModal();
+            if (
+                event.target ===
+                $("taskModal")
+            ) {
+
+                closeTaskModal();
+            }
         }
-
-    }
-);
+    );
 
 
-$("taskForm").addEventListener(
-    "submit",
-    event => {
+$("taskForm")
+    .addEventListener(
+        "submit",
+        event => {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const name =
-            $("taskName").value.trim();
 
-        const deadline =
-            $("taskDeadline").value;
+            const name =
+                $("taskName")
+                    .value
+                    .trim();
 
-        const editingId =
-            $("editingTaskId").value;
 
-        if (!name) {
+            const deadline =
+                $("taskDeadline")
+                    .value;
 
-            showMessage(
-                "Please enter a task name.",
-                "error"
-            );
 
-            $("taskName").focus();
+            const editingId =
+                $("editingTaskId")
+                    .value;
 
-            return;
-        }
 
-        if (!deadline) {
+            if (!name) {
 
-            showMessage(
-                "Please select a deadline.",
-                "error"
-            );
-
-            return;
-        }
-
-        if (editingId) {
-
-            const task =
-                tasks.find(
-                    t =>
-                        t.id ===
-                        Number(editingId)
+                showMessage(
+                    "Please enter a task name.",
+                    "error"
                 );
 
-            if (!task) return;
+                $("taskName").focus();
 
-            task.name =
-                name;
+                return;
+            }
 
-            task.deadline =
-                deadline;
 
-            save(
-                "gharLinkTasks",
-                tasks
-            );
+            if (!deadline) {
 
-            closeTaskModal();
+                showMessage(
+                    "Please select a deadline.",
+                    "error"
+                );
 
-            renderTasks();
+                return;
+            }
 
-            updateHome();
 
-            showMessage(
-                "Task updated successfully."
-            );
+            if (editingId) {
 
-        } else {
+                const task =
+                    tasks.find(
+                        t =>
+                            t.id ===
+                            Number(editingId)
+                    );
 
-            tasks.unshift({
 
-                id:
-                    Date.now(),
+                if (task) {
 
-                name,
+                    task.name =
+                        name;
 
-                deadline,
+                    task.deadline =
+                        deadline;
 
-                completed:
-                    false,
 
-                createdAt:
-                    new Date().toISOString(),
+                    save(
+                        "gharLinkTasks",
+                        tasks
+                    );
 
-                completedAt:
-                    null
-            });
 
-            save(
-                "gharLinkTasks",
-                tasks
-            );
+                    closeTaskModal();
 
-            closeTaskModal();
+                    renderTasks();
 
-            renderTasks();
+                    updateHome();
 
-            updateHome();
 
-            showMessage(
-                "Task added successfully."
-            );
+                    showMessage(
+                        "Task updated successfully."
+                    );
+                }
+
+            } else {
+
+                tasks.unshift({
+
+                    id:
+                        Date.now(),
+
+                    name,
+
+                    deadline,
+
+                    completed:
+                        false,
+
+                    createdAt:
+                        new Date()
+                            .toISOString(),
+
+                    completedAt:
+                        null
+
+                });
+
+
+                save(
+                    "gharLinkTasks",
+                    tasks
+                );
+
+
+                closeTaskModal();
+
+                renderTasks();
+
+                updateHome();
+
+
+                showMessage(
+                    "Task added successfully."
+                );
+            }
         }
-    }
-);
+    );
 
 
 function toggleTask(id) {
@@ -494,24 +667,30 @@ function toggleTask(id) {
             t => t.id === id
         );
 
+
     if (!task) return;
+
 
     task.completed =
         !task.completed;
+
 
     task.completedAt =
         task.completed
             ? new Date().toISOString()
             : null;
 
+
     save(
         "gharLinkTasks",
         tasks
     );
 
+
     renderTasks();
 
     updateHome();
+
 
     showMessage(
         task.completed
@@ -528,7 +707,9 @@ function editTask(id) {
             t => t.id === id
         );
 
+
     if (task) {
+
         openTaskModal(task);
     }
 }
@@ -541,7 +722,9 @@ function deleteTask(id) {
             t => t.id === id
         );
 
+
     if (!task) return;
+
 
     openConfirm(
         "Delete Task?",
@@ -553,14 +736,17 @@ function deleteTask(id) {
                     t => t.id !== id
                 );
 
+
             save(
                 "gharLinkTasks",
                 tasks
             );
 
+
             renderTasks();
 
             updateHome();
+
 
             showMessage(
                 "Task deleted."
@@ -570,11 +756,15 @@ function deleteTask(id) {
 }
 
 
-function formatDate(value) {
+function formatDate(
+    value
+) {
 
     if (!value) {
+
         return "No deadline";
     }
+
 
     return new Date(
         value + "T00:00:00"
@@ -592,11 +782,14 @@ function formatDate(value) {
 function isOverdue(task) {
 
     if (task.completed) {
+
         return false;
     }
 
+
     const today =
         new Date();
+
 
     today.setHours(
         0,
@@ -605,17 +798,21 @@ function isOverdue(task) {
         0
     );
 
+
     const deadline =
         new Date(
             task.deadline +
             "T00:00:00"
         );
 
+
     return deadline < today;
 }
 
 
-function getDeadlineText(task) {
+function getDeadlineText(
+    task
+) {
 
     if (task.completed) {
 
@@ -626,28 +823,41 @@ function getDeadlineText(task) {
                     task.completedAt
                 );
 
-            return `Completed • ${date.toLocaleDateString(
-                "en-IN",
-                {
-                    day: "numeric",
-                    month: "short"
-                }
-            )}`;
+
+            return `
+                Completed •
+                ${date.toLocaleDateString(
+                    "en-IN",
+                    {
+                        day: "numeric",
+                        month: "short"
+                    }
+                )}
+            `;
         }
+
 
         return "Completed";
     }
 
+
     if (isOverdue(task)) {
 
-        return `Overdue • ${formatDate(
-            task.deadline
-        )}`;
+        return `
+            Overdue •
+            ${formatDate(
+                task.deadline
+            )}
+        `;
     }
 
-    return `Pending • Due ${formatDate(
-        task.deadline
-    )}`;
+
+    return `
+        Pending • Due
+        ${formatDate(
+            task.deadline
+        )}
+    `;
 }
 
 
@@ -655,6 +865,7 @@ function renderTasks() {
 
     const list =
         $("taskList");
+
 
     if (!tasks.length) {
 
@@ -669,7 +880,9 @@ function renderTasks() {
                 </div>
 
                 <div>
-                    <strong>No tasks added</strong>
+                    <strong>
+                        No tasks added
+                    </strong>
 
                     <p>
                         Add your first household task.
@@ -679,97 +892,141 @@ function renderTasks() {
             </div>
         `;
 
+
         updateTaskCounts();
 
         return;
     }
 
-    list.innerHTML = "";
 
-    tasks.forEach(task => {
+    list.innerHTML = `
 
-        const item =
-            document.createElement("div");
+        <div class="task-list"></div>
+    `;
 
-        item.className =
-            `task-item ${
-                task.completed
-                    ? "completed"
-                    : ""
-            } ${
-                isOverdue(task)
-                    ? "overdue"
-                    : ""
-            }`;
 
-        item.innerHTML = `
+    const taskList =
+        list.querySelector(
+            ".task-list"
+        );
 
-            <button
-                type="button"
-                class="task-check"
-                aria-label="Toggle task"
-            >
+
+    tasks.forEach(
+        task => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className = `
+                task-item
                 ${
                     task.completed
-                        ? "✓"
+                        ? "completed"
                         : ""
                 }
-            </button>
+                ${
+                    isOverdue(task)
+                        ? "overdue"
+                        : ""
+                }
+            `;
 
-            <div class="task-content">
 
-                <strong>
-                    ${escapeHTML(task.name)}
-                </strong>
-
-                <span>
-                    ${getDeadlineText(task)}
-                </span>
-
-            </div>
-
-            <div class="task-actions">
+            item.innerHTML = `
 
                 <button
                     type="button"
-                    class="edit-task"
-                    aria-label="Edit task"
+                    class="task-check"
+                    aria-label="Toggle task"
                 >
-                    <svg>
-                        <use href="#icon-edit"></use>
-                    </svg>
+                    ${
+                        task.completed
+                            ? "✓"
+                            : ""
+                    }
                 </button>
 
-                <button
-                    type="button"
-                    class="delete-task"
-                    aria-label="Delete task"
-                >
-                    <svg>
-                        <use href="#icon-trash"></use>
-                    </svg>
-                </button>
 
-            </div>
-        `;
+                <div class="task-content">
 
-        item.querySelector(
-            ".task-check"
-        ).onclick =
-            () => toggleTask(task.id);
+                    <strong>
+                        ${escapeHTML(
+                            task.name
+                        )}
+                    </strong>
 
-        item.querySelector(
-            ".edit-task"
-        ).onclick =
-            () => editTask(task.id);
+                    <span>
+                        ${getDeadlineText(
+                            task
+                        )}
+                    </span>
 
-        item.querySelector(
-            ".delete-task"
-        ).onclick =
-            () => deleteTask(task.id);
+                </div>
 
-        list.appendChild(item);
-    });
+
+                <div class="task-actions">
+
+                    <button
+                        type="button"
+                        class="edit-task"
+                        aria-label="Edit task"
+                    >
+                        <svg>
+                            <use href="#icon-edit"></use>
+                        </svg>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="delete-task"
+                        aria-label="Delete task"
+                    >
+                        <svg>
+                            <use href="#icon-trash"></use>
+                        </svg>
+                    </button>
+
+                </div>
+            `;
+
+
+            item.querySelector(
+                ".task-check"
+            ).onclick =
+                () =>
+                    toggleTask(
+                        task.id
+                    );
+
+
+            item.querySelector(
+                ".edit-task"
+            ).onclick =
+                () =>
+                    editTask(
+                        task.id
+                    );
+
+
+            item.querySelector(
+                ".delete-task"
+            ).onclick =
+                () =>
+                    deleteTask(
+                        task.id
+                    );
+
+
+            taskList.appendChild(
+                item
+            );
+        }
+    );
+
 
     updateTaskCounts();
 }
@@ -779,13 +1036,18 @@ function updateTaskCounts() {
 
     const completed =
         tasks.filter(
-            task => task.completed
+            task =>
+                task.completed
         ).length;
 
-    $("taskCount").textContent =
+
+    $("taskCount")
+        .textContent =
         tasks.length;
 
-    $("completedCount").textContent =
+
+    $("completedCount")
+        .textContent =
         completed;
 }
 
@@ -794,134 +1056,202 @@ function updateTaskCounts() {
    BILLS
 ========================================================= */
 
-function openBillModal(bill = null) {
+function resetBillForm() {
 
-    $("billModal").classList.add("show");
+    currentProducts = [];
+
+    editingBillId = null;
+
+
+    $("billCustomerName")
+        .value = "";
+
+
+    $("productName")
+        .value = "";
+
+
+    $("productQty")
+        .value = 1;
+
+
+    $("productPrice")
+        .value = "";
+
+
+    renderBillProducts();
+}
+
+
+function openBillModal(
+    bill = null
+) {
+
+    $("billModal")
+        .classList.add("show");
+
 
     if (bill) {
 
         editingBillId =
             bill.id;
 
-        $("billModalTitle").textContent =
+
+        $("billModalTitle")
+            .textContent =
             "Edit Bill";
 
-        $("saveBillText").textContent =
+
+        $("saveBillText")
+            .textContent =
             "Save Changes";
 
+
+        $("billCustomerName")
+            .value =
+            bill.customerName ||
+            "";
+
+
         currentProducts =
-            bill.products.map(
-                product => ({
-                    ...product
-                })
-            );
+            (bill.products || [])
+                .map(
+                    product => ({
+                        id:
+                            product.id ||
+                            Date.now() +
+                            Math.random(),
+
+                        name:
+                            product.name,
+
+                        quantity:
+                            Number(
+                                product.quantity
+                            ),
+
+                        price:
+                            Number(
+                                product.price
+                            ),
+
+                        total:
+                            Number(
+                                product.total
+                            )
+                    })
+                );
 
     } else {
 
         editingBillId =
             null;
 
-        $("billModalTitle").textContent =
+
+        $("billModalTitle")
+            .textContent =
             "Create Bill";
 
-        $("saveBillText").textContent =
+
+        $("saveBillText")
+            .textContent =
             "Save Bill";
 
-        currentProducts = [];
+
+        resetBillForm();
     }
 
-    $("productName").value =
-        "";
-
-    $("productQty").value =
-        1;
-
-    $("productPrice").value =
-        "";
 
     renderBillProducts();
 
-    setTimeout(
-        () => $("productName").focus(),
-        100
-    );
+
+    setTimeout(() => {
+
+        $("billCustomerName")
+            .focus();
+
+    }, 100);
 }
 
 
 function closeBillModal() {
 
-    $("billModal").classList.remove(
-        "show"
-    );
+    $("billModal")
+        .classList.remove(
+            "show"
+        );
 
-    currentProducts = [];
 
-    editingBillId = null;
+    resetBillForm();
+
 
     $("billForm").reset();
 
-    $("productQty").value =
-        1;
 
-    $("billModalTitle").textContent =
-        "Create Bill";
+    $("productQty")
+        .value = 1;
 
-    $("saveBillText").textContent =
-        "Save Bill";
 
     renderBillProducts();
 }
 
 
-$("createBillButton").addEventListener(
-    "click",
-    () => openBillModal()
-);
+$("createBillButton")
+    .addEventListener(
+        "click",
+        () => openBillModal()
+    );
 
 
-$("closeBillModal").addEventListener(
-    "click",
-    closeBillModal
-);
+$("closeBillModal")
+    .addEventListener(
+        "click",
+        closeBillModal
+    );
 
 
-$("billModal").addEventListener(
-    "click",
-    event => {
+$("billModal")
+    .addEventListener(
+        "click",
+        event => {
 
-        if (
-            event.target ===
-            $("billModal")
-        ) {
-            closeBillModal();
+            if (
+                event.target ===
+                $("billModal")
+            ) {
+
+                closeBillModal();
+            }
         }
-
-    }
-);
+    );
 
 
-/* ADD PRODUCT */
-
-$("addProductButton").addEventListener(
-    "click",
-    addProduct
-);
+$("addProductButton")
+    .addEventListener(
+        "click",
+        addProduct
+    );
 
 
 function addProduct() {
 
     const name =
-        $("productName").value.trim();
+        $("productName")
+            .value
+            .trim();
+
 
     const quantity =
         Number(
             $("productQty").value
         );
 
+
     const price =
         Number(
             $("productPrice").value
         );
+
 
     if (!name) {
 
@@ -934,6 +1264,7 @@ function addProduct() {
 
         return;
     }
+
 
     if (
         !quantity ||
@@ -950,6 +1281,7 @@ function addProduct() {
         return;
     }
 
+
     if (
         Number.isNaN(price) ||
         price < 0
@@ -965,13 +1297,12 @@ function addProduct() {
         return;
     }
 
+
     currentProducts.push({
 
         id:
             Date.now() +
-            Math.floor(
-                Math.random() * 1000
-            ),
+            Math.random(),
 
         name,
 
@@ -981,20 +1312,27 @@ function addProduct() {
 
         total:
             quantity * price
+
     });
 
-    $("productName").value =
-        "";
 
-    $("productQty").value =
-        1;
+    $("productName")
+        .value = "";
 
-    $("productPrice").value =
-        "";
+
+    $("productQty")
+        .value = 1;
+
+
+    $("productPrice")
+        .value = "";
+
 
     renderBillProducts();
 
-    $("productName").focus();
+
+    $("productName")
+        .focus();
 }
 
 
@@ -1006,7 +1344,9 @@ function removeProduct(id) {
                 product.id !== id
         );
 
+
     renderBillProducts();
+
 
     showMessage(
         "Product removed."
@@ -1020,15 +1360,21 @@ function getBillTotal() {
         (sum, product) =>
             sum +
             Number(product.total),
+
         0
     );
 }
 
 
+/* =========================================================
+   BILL PRODUCTS UI
+========================================================= */
+
 function renderBillProducts() {
 
     const container =
         $("billProducts");
+
 
     if (!currentProducts.length) {
 
@@ -1041,8 +1387,8 @@ function renderBillProducts() {
 
     } else {
 
-        container.innerHTML =
-            "";
+        container.innerHTML = "";
+
 
         currentProducts.forEach(
             product => {
@@ -1052,8 +1398,10 @@ function renderBillProducts() {
                         "div"
                     );
 
+
                 row.className =
                     "product-row";
+
 
                 row.innerHTML = `
 
@@ -1066,7 +1414,9 @@ function renderBillProducts() {
                         </strong>
 
                         <span>
-                            ${product.quantity}
+                            ${
+                                product.quantity
+                            }
                             ×
                             ₹${formatMoney(
                                 product.price
@@ -1075,11 +1425,13 @@ function renderBillProducts() {
 
                     </div>
 
+
                     <div class="product-price">
                         ₹${formatMoney(
                             product.total
                         )}
                     </div>
+
 
                     <button
                         type="button"
@@ -1092,6 +1444,7 @@ function renderBillProducts() {
                     </button>
                 `;
 
+
                 row.querySelector(
                     ".remove-product"
                 ).onclick =
@@ -1100,6 +1453,7 @@ function renderBillProducts() {
                             product.id
                         );
 
+
                 container.appendChild(
                     row
                 );
@@ -1107,69 +1461,157 @@ function renderBillProducts() {
         );
     }
 
-    $("currentBillTotal").textContent =
+
+    $("currentBillTotal")
+        .textContent =
         `₹${formatMoney(
             getBillTotal()
         )}`;
 }
 
 
-/* SAVE / UPDATE BILL */
+/* =========================================================
+   SAVE / UPDATE BILL
+========================================================= */
 
-$("billForm").addEventListener(
-    "submit",
-    event => {
+$("billForm")
+    .addEventListener(
+        "submit",
+        event => {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        if (!currentProducts.length) {
 
-            showMessage(
-                "Add at least one product first.",
-                "error"
-            );
+            const customerName =
+                $("billCustomerName")
+                    .value
+                    .trim();
 
-            return;
-        }
 
-        const total =
-            getBillTotal();
-
-        if (editingBillId !== null) {
-
-            const bill =
-                bills.find(
-                    item =>
-                        item.id ===
-                        editingBillId
-                );
-
-            if (!bill) {
+            if (!customerName) {
 
                 showMessage(
-                    "Bill could not be found.",
+                    "Please enter the customer's name.",
                     "error"
                 );
 
-                closeBillModal();
+                $("billCustomerName")
+                    .focus();
 
                 return;
             }
 
-            bill.products =
-                currentProducts.map(
-                    product => ({
-                        ...product
-                    })
+
+            if (
+                !currentProducts.length
+            ) {
+
+                showMessage(
+                    "Add at least one product first.",
+                    "error"
                 );
 
-            bill.total =
-                total;
+                return;
+            }
+
+
+            const total =
+                getBillTotal();
+
+
+            /* EDIT EXISTING BILL */
+
+            if (editingBillId) {
+
+                const bill =
+                    bills.find(
+                        item =>
+                            item.id ===
+                            editingBillId
+                    );
+
+
+                if (bill) {
+
+                    bill.customerName =
+                        customerName;
+
+
+                    bill.products =
+                        [...currentProducts];
+
+
+                    bill.total =
+                        total;
+
+
+                    save(
+                        "gharLinkBills",
+                        bills
+                    );
+
+
+                    closeBillModal();
+
+                    renderBills();
+
+                    updateHome();
+
+
+                    showScreen(
+                        "billsScreen"
+                    );
+
+
+                    showMessage(
+                        "Bill updated successfully."
+                    );
+
+                    return;
+                }
+            }
+
+
+            /* CREATE NEW BILL */
+
+            const now =
+                Date.now();
+
+
+            const bill = {
+
+                id:
+                    now,
+
+                billNumber:
+                    "GL-" +
+                    String(now)
+                        .slice(-6),
+
+                customerName,
+
+                products:
+                    [...currentProducts],
+
+                total,
+
+                createdAt:
+                    new Date()
+                        .toISOString()
+
+            };
+
+
+            bills.unshift(
+                bill
+            );
+
 
             save(
                 "gharLinkBills",
                 bills
             );
+
 
             closeBillModal();
 
@@ -1177,76 +1619,28 @@ $("billForm").addEventListener(
 
             updateHome();
 
+
             showScreen(
                 "billsScreen"
             );
 
+
             showMessage(
-                "Bill updated successfully."
+                "Bill saved successfully."
             );
-
-            return;
         }
-
-
-        const bill = {
-
-            id:
-                Date.now(),
-
-            billNumber:
-                "GL-" +
-                String(
-                    Date.now()
-                ).slice(-6),
-
-            products:
-                currentProducts.map(
-                    product => ({
-                        ...product
-                    })
-                ),
-
-            total,
-
-            createdAt:
-                new Date().toISOString()
-        };
-
-        bills.unshift(
-            bill
-        );
-
-        save(
-            "gharLinkBills",
-            bills
-        );
-
-        closeBillModal();
-
-        renderBills();
-
-        updateHome();
-
-        showScreen(
-            "billsScreen"
-        );
-
-        showMessage(
-            "Bill saved successfully."
-        );
-    }
-);
+    );
 
 
 /* =========================================================
-   BILL RENDER
+   BILLS RENDER
 ========================================================= */
 
 function renderBills() {
 
     const container =
         $("recentBills");
+
 
     if (!bills.length) {
 
@@ -1255,99 +1649,145 @@ function renderBills() {
             <div class="empty-card">
 
                 <div class="empty-icon">
+
                     <svg>
                         <use href="#icon-receipt"></use>
                     </svg>
+
                 </div>
 
+
                 <div>
-                    <strong>No bills yet</strong>
+
+                    <strong>
+                        No bills yet
+                    </strong>
 
                     <p>
                         Your created bills
                         will appear here.
                     </p>
+
                 </div>
 
             </div>
         `;
+
 
         updateBillStats();
 
         return;
     }
 
+
     container.innerHTML =
         `<div class="bill-list"></div>`;
+
 
     const list =
         container.querySelector(
             ".bill-list"
         );
 
-    bills.forEach(bill => {
 
-        const card =
-            document.createElement(
-                "div"
-            );
+    bills.forEach(
+        bill => {
 
-        card.className =
-            "bill-card";
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-        const date =
-            new Date(
-                bill.createdAt
-            );
 
-        card.innerHTML = `
+            card.className =
+                "bill-card";
 
-            <div class="bill-card-icon">
-                <svg>
-                    <use href="#icon-receipt"></use>
-                </svg>
-            </div>
 
-            <div class="bill-card-info">
+            const date =
+                new Date(
+                    bill.createdAt
+                );
 
-                <strong>
-                    ${escapeHTML(
-                        bill.billNumber
-                    )}
-                </strong>
 
-                <span>
-                    ${bill.products.length}
-                    product${
-                        bill.products.length !== 1
-                            ? "s"
-                            : ""
-                    }
-                    •
-                    ${date.toLocaleDateString(
-                        "en-IN",
-                        {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric"
+            const customer =
+                bill.customerName ||
+                "Customer name not available";
+
+
+            card.innerHTML = `
+
+                <div class="bill-card-icon">
+
+                    <svg>
+                        <use href="#icon-receipt"></use>
+                    </svg>
+
+                </div>
+
+
+                <div class="bill-card-info">
+
+                    <strong>
+                        ${escapeHTML(
+                            customer
+                        )}
+                    </strong>
+
+
+                    <span>
+
+                        ${escapeHTML(
+                            bill.billNumber
+                        )}
+
+                        •
+
+                        ${bill.products.length}
+                        product${
+                            bill.products.length !== 1
+                                ? "s"
+                                : ""
                         }
+
+                        •
+
+                        ${date.toLocaleDateString(
+                            "en-IN",
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )}
+
+                    </span>
+
+                </div>
+
+
+                <div class="bill-card-amount">
+
+                    ₹${formatMoney(
+                        bill.total
                     )}
-                </span>
 
-            </div>
+                </div>
+            `;
 
-            <div class="bill-card-amount">
-                ₹${formatMoney(
-                    bill.total
-                )}
-            </div>
-        `;
 
-        card.onclick =
-            () => openBillDetails(bill);
+            card.onclick =
+                () =>
+                    openBillDetails(
+                        bill
+                    );
 
-        list.appendChild(card);
-    });
+
+            list.appendChild(
+                card
+            );
+        }
+    );
+
 
     updateBillStats();
 }
@@ -1355,19 +1795,28 @@ function renderBills() {
 
 function updateBillStats() {
 
-    $("billCount").textContent =
+    $("billCount")
+        .textContent =
         bills.length;
+
 
     const total =
         bills.reduce(
             (sum, bill) =>
                 sum +
-                Number(bill.total),
+                Number(
+                    bill.total || 0
+                ),
+
             0
         );
 
-    $("billTotalAmount").textContent =
-        `₹${formatMoney(total)}`;
+
+    $("billTotalAmount")
+        .textContent =
+        `₹${formatMoney(
+            total
+        )}`;
 }
 
 
@@ -1375,49 +1824,60 @@ function updateBillStats() {
    BILL DETAILS
 ========================================================= */
 
-function openBillDetails(bill) {
+function openBillDetails(
+    bill
+) {
 
-    $("detailTitle").textContent =
+    $("detailTitle")
+        .textContent =
         bill.billNumber;
+
 
     let productsHTML =
         "";
 
-    bill.products.forEach(
-        product => {
 
-            productsHTML += `
+    (bill.products || [])
+        .forEach(
+            product => {
 
-                <div class="product-row">
+                productsHTML += `
 
-                    <div class="product-info">
+                    <div class="product-row">
 
-                        <strong>
-                            ${escapeHTML(
-                                product.name
-                            )}
-                        </strong>
+                        <div class="product-info">
 
-                        <span>
-                            ${product.quantity}
-                            ×
+                            <strong>
+                                ${escapeHTML(
+                                    product.name
+                                )}
+                            </strong>
+
+                            <span>
+                                ${
+                                    product.quantity
+                                }
+                                ×
+                                ₹${formatMoney(
+                                    product.price
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="product-price">
+
                             ₹${formatMoney(
-                                product.price
+                                product.total
                             )}
-                        </span>
+
+                        </div>
 
                     </div>
-
-                    <div class="product-price">
-                        ₹${formatMoney(
-                            product.total
-                        )}
-                    </div>
-
-                </div>
-            `;
-        }
-    );
+                `;
+            }
+        );
 
 
     const date =
@@ -1426,7 +1886,50 @@ function openBillDetails(bill) {
         );
 
 
-    $("detailContent").innerHTML = `
+    const customer =
+        bill.customerName ||
+        "Customer name not available";
+
+
+    $("detailContent")
+        .innerHTML = `
+
+        <div class="detail-box bill-customer">
+
+            <div>
+                <strong>
+                    Bill For
+                </strong>
+
+                <span>
+                    Customer Name
+                </span>
+            </div>
+
+
+            <span>
+                ${escapeHTML(
+                    customer
+                )}
+            </span>
+
+        </div>
+
+
+        <div class="detail-box">
+
+            <strong>
+                Bill Number
+            </strong>
+
+            <span>
+                ${escapeHTML(
+                    bill.billNumber
+                )}
+            </span>
+
+        </div>
+
 
         <div class="detail-box">
 
@@ -1449,7 +1952,9 @@ function openBillDetails(bill) {
 
 
         <div class="bill-products">
+
             ${productsHTML}
+
         </div>
 
 
@@ -1472,12 +1977,13 @@ function openBillDetails(bill) {
 
             <button
                 type="button"
-                class="secondary-button edit-button"
+                class="secondary-button"
                 id="editBillButton"
             >
                 <svg>
                     <use href="#icon-edit"></use>
                 </svg>
+
                 Edit
             </button>
 
@@ -1490,6 +1996,7 @@ function openBillDetails(bill) {
                 <svg>
                     <use href="#icon-trash"></use>
                 </svg>
+
                 Delete
             </button>
 
@@ -1497,40 +2004,74 @@ function openBillDetails(bill) {
             <button
                 type="button"
                 class="primary-button"
-                id="printBillButton"
+                id="downloadBillButton"
             >
                 <svg>
-                    <use href="#icon-print"></use>
+                    <use href="#icon-download"></use>
                 </svg>
-                Print / PDF
+
+                PDF
             </button>
 
         </div>
+
+
+        <button
+            type="button"
+            class="secondary-button"
+            id="printBillButton"
+            style="margin-top:8px;"
+        >
+            <svg>
+                <use href="#icon-print"></use>
+            </svg>
+
+            Print
+        </button>
     `;
 
 
-    $("detailModal").classList.add(
-        "show"
-    );
+    $("detailModal")
+        .classList.add("show");
 
 
-    $("editBillButton").onclick =
+    $("editBillButton")
+        .onclick =
         () => {
 
-            $("detailModal").classList.remove(
-                "show"
-            );
+            $("detailModal")
+                .classList.remove(
+                    "show"
+                );
 
-            openBillModal(bill);
+            openBillModal(
+                bill
+            );
         };
 
 
-    $("deleteBillButton").onclick =
-        () => deleteBill(bill.id);
+    $("deleteBillButton")
+        .onclick =
+        () =>
+            deleteBill(
+                bill.id
+            );
 
 
-    $("printBillButton").onclick =
-        () => printBill(bill.id);
+    $("downloadBillButton")
+        .onclick =
+        () =>
+            downloadBillPDF(
+                bill.id
+            );
+
+
+    $("printBillButton")
+        .onclick =
+        () =>
+            printBill(
+                bill.id
+            );
 }
 
 
@@ -1546,7 +2087,9 @@ function deleteBill(id) {
                 item.id === id
         );
 
+
     if (!bill) return;
+
 
     openConfirm(
         "Delete Bill?",
@@ -1559,18 +2102,17 @@ function deleteBill(id) {
                         item.id !== id
                 );
 
+
             save(
                 "gharLinkBills",
                 bills
             );
 
+
             renderBills();
 
             updateHome();
 
-            showScreen(
-                "billsScreen"
-            );
 
             showMessage(
                 "Bill deleted."
@@ -1581,10 +2123,260 @@ function deleteBill(id) {
 
 
 /* =========================================================
-   PRINT / PDF
+   PDF — HELPERS
 ========================================================= */
 
-function printBill(id) {
+/*
+   This creates a real PDF file directly in JavaScript.
+
+   It does NOT depend on the browser's print dialog.
+   This is the important mobile fix.
+*/
+
+
+function pdfEscape(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+        .replace(
+            /\(/g,
+            "\\("
+        )
+        .replace(
+            /\)/g,
+            "\\)"
+        );
+}
+
+
+function pdfText(
+    text,
+    x,
+    y,
+    size = 10,
+    font = "F1"
+) {
+
+    return `
+BT
+/${font} ${size} Tf
+${x} ${y} Td
+(${pdfEscape(text)}) Tj
+ET
+`;
+}
+
+
+function createSimplePDF(
+    lines
+) {
+
+    const pageWidth =
+        595;
+
+    const pageHeight =
+        842;
+
+
+    const contentParts = [];
+
+
+    contentParts.push(
+        "1 0 0 1 0 0 cm"
+    );
+
+
+    let y =
+        pageHeight - 50;
+
+
+    lines.forEach(
+        line => {
+
+            contentParts.push(
+                pdfText(
+                    line.text,
+                    line.x ?? 40,
+                    line.y ?? y,
+                    line.size ?? 10,
+                    line.font ?? "F1"
+                )
+            );
+
+
+            y -=
+                line.gap ?? 16;
+        }
+    );
+
+
+    const content =
+        contentParts.join(
+            "\n"
+        );
+
+
+    const objects = [];
+
+
+    objects[1] = `
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+`;
+
+
+    objects[2] = `
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+`;
+
+
+    objects[3] = `
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 ${pageWidth} ${pageHeight}]
+/Resources <<
+    /Font <<
+        /F1 5 0 R
+    >>
+>>
+/Contents 4 0 R
+>>
+`;
+
+
+    objects[4] = `
+<<
+/Length ${content.length}
+>>
+stream
+${content}
+endstream
+`;
+
+
+    objects[5] = `
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+`;
+
+
+    let pdf =
+        "%PDF-1.4\n";
+
+
+    const offsets =
+        [0];
+
+
+    for (
+        let i = 1;
+        i <= 5;
+        i++
+    ) {
+
+        offsets[i] =
+            pdf.length;
+
+
+        pdf +=
+            `${i} 0 obj\n`;
+
+
+        pdf +=
+            objects[i];
+
+
+        pdf +=
+            "\nendobj\n";
+    }
+
+
+    const xrefOffset =
+        pdf.length;
+
+
+    pdf +=
+        "xref\n";
+
+
+    pdf +=
+        "0 6\n";
+
+
+    pdf +=
+        "0000000000 65535 f \n";
+
+
+    for (
+        let i = 1;
+        i <= 5;
+        i++
+    ) {
+
+        pdf +=
+            String(
+                offsets[i]
+            ).padStart(
+                10,
+                "0"
+            ) +
+            " 00000 n \n";
+    }
+
+
+    pdf +=
+        "trailer\n";
+
+
+    pdf += `
+<<
+/Size 6
+/Root 1 0 R
+>>
+`;
+
+
+    pdf +=
+        "startxref\n";
+
+
+    pdf +=
+        xrefOffset +
+        "\n";
+
+
+    pdf +=
+        "%%EOF";
+
+
+    return pdf;
+}
+
+
+/* =========================================================
+   DOWNLOAD BILL PDF
+========================================================= */
+
+function downloadBillPDF(
+    id
+) {
 
     const bill =
         bills.find(
@@ -1592,44 +2384,389 @@ function printBill(id) {
                 item.id === id
         );
 
+
     if (!bill) return;
 
-    let rows =
-        "";
 
-    bill.products.forEach(
-        product => {
+    const customer =
+        bill.customerName ||
+        "Customer name not available";
 
-            rows += `
 
-                <tr>
+    const date =
+        new Date(
+            bill.createdAt
+        );
 
-                    <td>
-                        ${escapeHTML(
-                            product.name
-                        )}
-                    </td>
 
-                    <td>
-                        ${product.quantity}
-                    </td>
+    const lines = [];
 
-                    <td>
-                        ₹${formatMoney(
+
+    lines.push({
+        text:
+            "GharLink",
+        x: 40,
+        y: 790,
+        size: 24,
+        font: "F1",
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            "Everything. One Place.",
+        x: 40,
+        y: 768,
+        size: 10,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            "BILL",
+        x: 480,
+        y: 790,
+        size: 16,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            `Bill Number: ${bill.billNumber}`,
+        x: 40,
+        y: 735,
+        size: 10,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            `Date: ${date.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
+            )}`,
+        x: 40,
+        y: 718,
+        size: 10,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            `Bill For: ${customer}`,
+        x: 40,
+        y: 701,
+        size: 11,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            "------------------------------------------------------------",
+        x: 40,
+        y: 675,
+        size: 9,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            "Product",
+        x: 40,
+        y: 657,
+        size: 10,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            "Qty",
+        x: 300,
+        y: 657,
+        size: 10,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            "Price",
+        x: 360,
+        y: 657,
+        size: 10,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            "Total",
+        x: 455,
+        y: 657,
+        size: 10,
+        gap: 0
+    });
+
+
+    let rowY =
+        638;
+
+
+    (bill.products || [])
+        .forEach(
+            product => {
+
+                let productName =
+                    String(
+                        product.name
+                    );
+
+
+                if (
+                    productName.length >
+                    36
+                ) {
+
+                    productName =
+                        productName
+                            .slice(
+                                0,
+                                33
+                            ) +
+                        "...";
+                }
+
+
+                lines.push({
+                    text:
+                        productName,
+                    x: 40,
+                    y: rowY,
+                    size: 9,
+                    gap: 0
+                });
+
+
+                lines.push({
+                    text:
+                        String(
+                            product.quantity
+                        ),
+                    x: 300,
+                    y: rowY,
+                    size: 9,
+                    gap: 0
+                });
+
+
+                lines.push({
+                    text:
+                        "Rs. " +
+                        formatMoney(
                             product.price
-                        )}
-                    </td>
+                        ),
+                    x: 360,
+                    y: rowY,
+                    size: 9,
+                    gap: 0
+                });
 
-                    <td>
-                        ₹${formatMoney(
+
+                lines.push({
+                    text:
+                        "Rs. " +
+                        formatMoney(
                             product.total
-                        )}
-                    </td>
+                        ),
+                    x: 455,
+                    y: rowY,
+                    size: 9,
+                    gap: 0
+                });
 
-                </tr>
-            `;
-        }
+
+                rowY -= 18;
+            }
+        );
+
+
+    lines.push({
+        text:
+            "------------------------------------------------------------",
+        x: 40,
+        y: rowY - 4,
+        size: 9,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            `Grand Total: Rs. ${formatMoney(
+                bill.total
+            )}`,
+        x: 350,
+        y: rowY - 28,
+        size: 14,
+        gap: 0
+    });
+
+
+    lines.push({
+        text:
+            "Generated by GharLink",
+        x: 40,
+        y: 55,
+        size: 9,
+        gap: 0
+    });
+
+
+    const pdf =
+        createSimplePDF(
+            lines
+        );
+
+
+    const blob =
+        new Blob(
+            [pdf],
+            {
+                type:
+                    "application/pdf"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    link.href =
+        url;
+
+
+    link.download =
+        `${sanitizeFileName(
+            bill.billNumber
+        )}.pdf`;
+
+
+    link.style.display =
+        "none";
+
+
+    document.body.appendChild(
+        link
     );
+
+
+    link.click();
+
+
+    link.remove();
+
+
+    setTimeout(
+        () => {
+
+            URL.revokeObjectURL(
+                url
+            );
+
+        },
+        1000
+    );
+
+
+    showMessage(
+        "PDF download started."
+    );
+}
+
+
+/* =========================================================
+   PRINT BILL
+========================================================= */
+
+function printBill(
+    id
+) {
+
+    const bill =
+        bills.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!bill) return;
+
+
+    let rows = "";
+
+
+    (bill.products || [])
+        .forEach(
+            product => {
+
+                rows += `
+
+                    <tr>
+
+                        <td>
+                            ${escapeHTML(
+                                product.name
+                            )}
+                        </td>
+
+                        <td>
+                            ${
+                                product.quantity
+                            }
+                        </td>
+
+                        <td>
+                            ₹${formatMoney(
+                                product.price
+                            )}
+                        </td>
+
+                        <td>
+                            ₹${formatMoney(
+                                product.total
+                            )}
+                        </td>
+
+                    </tr>
+                `;
+            }
+        );
+
+
+    const customer =
+        bill.customerName ||
+        "Customer name not available";
 
 
     const printWindow =
@@ -1664,7 +2801,12 @@ function printBill(id) {
                 )}
             </title>
 
+
             <style>
+
+                * {
+                    box-sizing:border-box;
+                }
 
                 body {
                     font-family:
@@ -1674,25 +2816,47 @@ function printBill(id) {
                     padding:30px;
 
                     color:#222;
+
+                    max-width:800px;
+
+                    margin:auto;
                 }
 
                 h1 {
-                    margin-bottom:4px;
+                    margin:0 0 4px;
                 }
 
-                p {
+                .tagline {
+                    color:#777;
+                    margin:0 0 25px;
+                }
+
+                .customer {
+                    border:1px solid #ddd;
+                    padding:14px;
+                    border-radius:8px;
+                    margin-bottom:20px;
+                }
+
+                .customer strong {
+                    display:block;
+                    margin-bottom:5px;
+                }
+
+                .meta {
                     color:#666;
+                    margin:5px 0;
                 }
 
                 table {
                     width:100%;
                     border-collapse:collapse;
-                    margin-top:25px;
+                    margin-top:20px;
                 }
 
                 th,
                 td {
-                    padding:12px;
+                    padding:10px;
                     border-bottom:
                         1px solid #ddd;
                     text-align:left;
@@ -1705,9 +2869,16 @@ function printBill(id) {
                     margin-top:22px;
                 }
 
+                @media print {
+                    body {
+                        padding:0;
+                    }
+                }
+
             </style>
 
         </head>
+
 
         <body>
 
@@ -1715,49 +2886,100 @@ function printBill(id) {
                 GharLink
             </h1>
 
-            <p>
+            <p class="tagline">
+                Everything. One Place.
+            </p>
+
+
+            <div class="customer">
+
+                <strong>
+                    Bill For
+                </strong>
+
+                <div>
+                    ${escapeHTML(
+                        customer
+                    )}
+                </div>
+
+            </div>
+
+
+            <p class="meta">
+                <strong>
+                    Bill Number:
+                </strong>
+
                 ${escapeHTML(
                     bill.billNumber
                 )}
             </p>
 
-            <p>
+
+            <p class="meta">
+
+                <strong>
+                    Date:
+                </strong>
+
                 ${new Date(
                     bill.createdAt
                 ).toLocaleDateString(
                     "en-IN",
                     {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric"
+                        day:"numeric",
+                        month:"long",
+                        year:"numeric"
                     }
                 )}
+
             </p>
+
 
             <table>
 
                 <thead>
 
                     <tr>
-                        <th>Product</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>Total</th>
+
+                        <th>
+                            Product
+                        </th>
+
+                        <th>
+                            Qty
+                        </th>
+
+                        <th>
+                            Price
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
                     </tr>
 
                 </thead>
 
+
                 <tbody>
+
                     ${rows}
+
                 </tbody>
 
             </table>
 
+
             <div class="total">
+
                 Total:
                 ₹${formatMoney(
                     bill.total
                 )}
+
             </div>
 
         </body>
@@ -1765,12 +2987,18 @@ function printBill(id) {
         </html>
     `);
 
+
     printWindow.document.close();
 
     printWindow.focus();
 
+
     setTimeout(
-        () => printWindow.print(),
+        () => {
+
+            printWindow.print();
+
+        },
         300
     );
 }
@@ -1788,21 +3016,31 @@ function updateHome() {
                 task.completed
         ).length;
 
+
     const pending =
         tasks.length -
         completed;
 
-    $("homeTotalTasks").textContent =
+
+    $("homeTotalTasks")
+        .textContent =
         tasks.length;
 
-    $("homePendingTasks").textContent =
+
+    $("homePendingTasks")
+        .textContent =
         pending;
 
-    $("homeCompletedTasks").textContent =
+
+    $("homeCompletedTasks")
+        .textContent =
         completed;
 
-    $("homeTotalBills").textContent =
+
+    $("homeTotalBills")
+        .textContent =
         bills.length;
+
 
     renderHomeTasks();
 
@@ -1810,13 +3048,22 @@ function updateHome() {
 }
 
 
+/* =========================================================
+   HOME TASKS
+========================================================= */
+
 function renderHomeTasks() {
 
     const container =
         $("homeTasks");
 
+
     const recent =
-        tasks.slice(0, 3);
+        tasks.slice(
+            0,
+            3
+        );
+
 
     if (!recent.length) {
 
@@ -1825,10 +3072,13 @@ function renderHomeTasks() {
             <div class="empty-card">
 
                 <div class="empty-icon">
+
                     <svg>
                         <use href="#icon-check"></use>
                     </svg>
+
                 </div>
+
 
                 <div>
 
@@ -1848,77 +3098,99 @@ function renderHomeTasks() {
         return;
     }
 
+
     container.innerHTML =
         `<div class="task-list"></div>`;
+
 
     const list =
         container.querySelector(
             ".task-list"
         );
 
-    recent.forEach(task => {
 
-        const item =
-            document.createElement(
-                "div"
-            );
+    recent.forEach(
+        task => {
 
-        item.className =
-            `task-item ${
-                task.completed
-                    ? "completed"
-                    : ""
-            }`;
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-        item.innerHTML = `
 
-            <button
-                type="button"
-                class="task-check"
-            >
-                ${
+            item.className =
+                `task-item ${
                     task.completed
-                        ? "✓"
+                        ? "completed"
                         : ""
-                }
-            </button>
+                }`;
 
-            <div class="task-content">
 
-                <strong>
-                    ${escapeHTML(
-                        task.name
-                    )}
-                </strong>
+            item.innerHTML = `
 
-                <span>
-                    ${getDeadlineText(
-                        task
-                    )}
-                </span>
+                <button
+                    type="button"
+                    class="task-check"
+                >
+                    ${
+                        task.completed
+                            ? "✓"
+                            : ""
+                    }
+                </button>
 
-            </div>
-        `;
 
-        item.querySelector(
-            ".task-check"
-        ).onclick =
-            () => toggleTask(
-                task.id
+                <div class="task-content">
+
+                    <strong>
+                        ${escapeHTML(
+                            task.name
+                        )}
+                    </strong>
+
+                    <span>
+                        ${getDeadlineText(
+                            task
+                        )}
+                    </span>
+
+                </div>
+            `;
+
+
+            item.querySelector(
+                ".task-check"
+            ).onclick =
+                () =>
+                    toggleTask(
+                        task.id
+                    );
+
+
+            list.appendChild(
+                item
             );
-
-        list.appendChild(item);
-    });
+        }
+    );
 }
 
+
+/* =========================================================
+   HOME BILLS
+========================================================= */
 
 function renderHomeBills() {
 
     const container =
         $("homeBills");
 
+
     const recent =
-        bills.slice(0, 3);
+        bills.slice(
+            0,
+            3
+        );
+
 
     if (!recent.length) {
 
@@ -1927,10 +3199,13 @@ function renderHomeBills() {
             <div class="empty-card">
 
                 <div class="empty-icon">
+
                     <svg>
                         <use href="#icon-receipt"></use>
                     </svg>
+
                 </div>
+
 
                 <div>
 
@@ -1950,65 +3225,94 @@ function renderHomeBills() {
         return;
     }
 
+
     container.innerHTML =
         `<div class="bill-list"></div>`;
+
 
     const list =
         container.querySelector(
             ".bill-list"
         );
 
-    recent.forEach(bill => {
 
-        const card =
-            document.createElement(
-                "div"
-            );
+    recent.forEach(
+        bill => {
 
-        card.className =
-            "bill-card";
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-        card.innerHTML = `
 
-            <div class="bill-card-icon">
+            card.className =
+                "bill-card";
 
-                <svg>
-                    <use href="#icon-receipt"></use>
-                </svg>
 
-            </div>
+            const customer =
+                bill.customerName ||
+                "Customer name not available";
 
-            <div class="bill-card-info">
 
-                <strong>
-                    ${escapeHTML(
-                        bill.billNumber
+            card.innerHTML = `
+
+                <div class="bill-card-icon">
+
+                    <svg>
+                        <use href="#icon-receipt"></use>
+                    </svg>
+
+                </div>
+
+
+                <div class="bill-card-info">
+
+                    <strong>
+                        ${escapeHTML(
+                            customer
+                        )}
+                    </strong>
+
+                    <span>
+                        ${escapeHTML(
+                            bill.billNumber
+                        )}
+
+                        •
+
+                        ${bill.products.length}
+                        product${
+                            bill.products.length !== 1
+                                ? "s"
+                                : ""
+                        }
+                    </span>
+
+                </div>
+
+
+                <div class="bill-card-amount">
+
+                    ₹${formatMoney(
+                        bill.total
                     )}
-                </strong>
 
-                <span>
-                    ${bill.products.length}
-                    product${
-                        bill.products.length !== 1
-                            ? "s"
-                            : ""
-                    }
-                </span>
+                </div>
+            `;
 
-            </div>
 
-            <div class="bill-card-amount">
-                ₹${formatMoney(
-                    bill.total
-                )}
-            </div>
-        `;
+            card.onclick =
+                () =>
+                    openBillDetails(
+                        bill
+                    );
 
-        card.onclick =
-            () => openBillDetails(bill);
 
-        list.appendChild(card);
-    });
+            list.appendChild(
+                card
+            );
+        }
+    );
 }
 
 
@@ -2017,44 +3321,66 @@ function renderHomeBills() {
 ========================================================= */
 
 document
-    .querySelectorAll(".more-item")
-    .forEach(item => {
+    .querySelectorAll(
+        ".more-item"
+    )
+    .forEach(
+        item => {
 
-        item.addEventListener(
-            "click",
-            () =>
-                openMoreSection(
-                    item.dataset.more
-                )
-        );
+            item.addEventListener(
+                "click",
+                () => {
 
-    });
+                    openMoreSection(
+                        item.dataset.more
+                    );
+                }
+            );
+        }
+    );
 
 
-function openMoreSection(type) {
+function openMoreSection(
+    type
+) {
 
     if (type === "family") {
+
         openFamily();
+
         return;
     }
+
 
     if (type === "notes") {
+
         openNotes();
+
         return;
     }
+
 
     if (type === "links") {
+
         openLinks();
+
         return;
     }
+
 
     if (type === "settings") {
+
         openSettings();
+
         return;
     }
 
+
     if (type === "about") {
+
         openAbout();
+
+        return;
     }
 }
 
@@ -2065,50 +3391,50 @@ function openMoreSection(type) {
 
 function openFamily() {
 
-    $("detailTitle").textContent =
+    $("detailTitle")
+        .textContent =
         "Family";
 
-    $("detailContent").innerHTML = `
+
+    $("detailContent")
+        .innerHTML = `
 
         <form id="familyForm">
 
-            <div class="form-group">
+            <label>
+                Name
+            </label>
 
-                <label>Name</label>
+            <input
+                id="familyName"
+                type="text"
+                placeholder="Family member name"
+                required
+            >
 
-                <input
-                    id="familyName"
-                    type="text"
-                    placeholder="Family member name"
-                    required
-                >
 
-            </div>
+            <label>
+                Relation
+            </label>
 
-            <div class="form-group">
+            <input
+                id="familyRelation"
+                type="text"
+                placeholder="e.g. Father, Mother"
+                required
+            >
 
-                <label>Relation</label>
 
-                <input
-                    id="familyRelation"
-                    type="text"
-                    placeholder="e.g. Father, Mother"
-                    required
-                >
+            <label>
+                Phone
+            </label>
 
-            </div>
+            <input
+                id="familyPhone"
+                type="tel"
+                placeholder="Phone number"
+            >
 
-            <div class="form-group">
-
-                <label>Phone</label>
-
-                <input
-                    id="familyPhone"
-                    type="tel"
-                    placeholder="Phone number"
-                >
-
-            </div>
 
             <button
                 type="submit"
@@ -2119,34 +3445,46 @@ function openFamily() {
 
         </form>
 
+
         <div style="height:18px"></div>
+
 
         <div id="familyList"></div>
     `;
 
+
     renderFamily();
 
-    $("familyForm").onsubmit =
+
+    $("familyForm")
+        .onsubmit =
         event => {
 
             event.preventDefault();
+
 
             const name =
                 $("familyName")
                     .value
                     .trim();
 
+
             const relation =
                 $("familyRelation")
                     .value
                     .trim();
+
 
             const phone =
                 $("familyPhone")
                     .value
                     .trim();
 
-            if (!name || !relation) {
+
+            if (
+                !name ||
+                !relation
+            ) {
 
                 showMessage(
                     "Name and relation are required.",
@@ -2155,6 +3493,7 @@ function openFamily() {
 
                 return;
             }
+
 
             family.unshift({
 
@@ -2166,25 +3505,33 @@ function openFamily() {
                 relation,
 
                 phone
+
             });
+
 
             save(
                 "gharLinkFamily",
                 family
             );
 
-            $("familyForm").reset();
+
+            $("familyForm")
+                .reset();
+
 
             renderFamily();
+
 
             showMessage(
                 "Family member added."
             );
         };
 
-    $("detailModal").classList.add(
-        "show"
-    );
+
+    $("detailModal")
+        .classList.add(
+            "show"
+        );
 }
 
 
@@ -2193,7 +3540,9 @@ function renderFamily() {
     const list =
         $("familyList");
 
+
     if (!list) return;
+
 
     if (!family.length) {
 
@@ -2202,7 +3551,6 @@ function renderFamily() {
             <div class="empty-card">
 
                 <div>
-
                     <strong>
                         No family members
                     </strong>
@@ -2210,7 +3558,6 @@ function renderFamily() {
                     <p>
                         Add a family member above.
                     </p>
-
                 </div>
 
             </div>
@@ -2219,97 +3566,114 @@ function renderFamily() {
         return;
     }
 
-    list.innerHTML =
-        "";
 
-    family.forEach(member => {
+    list.innerHTML = "";
 
-        const card =
-            document.createElement(
-                "div"
-            );
 
-        card.className =
-            "detail-box";
+    family.forEach(
+        member => {
 
-        card.innerHTML = `
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-            <strong>
-                ${escapeHTML(
-                    member.name
-                )}
-            </strong>
 
-            <span>
-                ${escapeHTML(
-                    member.relation
-                )}
-            </span>
+            card.className =
+                "detail-box";
 
-            ${
-                member.phone
-                    ? `
-                        <a
-                            href="tel:${escapeHTML(
-                                member.phone
-                            )}"
-                            style="
-                                color:var(--accent);
-                                text-decoration:none;
-                                margin-top:6px;
-                                display:block;
-                            "
-                        >
-                            ${escapeHTML(
-                                member.phone
-                            )}
-                        </a>
-                    `
-                    : ""
-            }
 
-            <button
-                type="button"
-                class="secondary-button"
-                style="margin-top:10px;"
-            >
-                Delete
-            </button>
-        `;
+            const phone =
+                escapeHTML(
+                    member.phone ||
+                    ""
+                );
 
-        card.querySelector(
-            "button"
-        ).onclick =
-            () => {
 
-                openConfirm(
-                    "Delete Member?",
-                    `Delete ${member.name}?`,
-                    () => {
+            card.innerHTML = `
 
-                        family =
-                            family.filter(
-                                m =>
-                                    m.id !==
-                                    member.id
+                <strong>
+                    ${escapeHTML(
+                        member.name
+                    )}
+                </strong>
+
+                <span>
+                    ${escapeHTML(
+                        member.relation
+                    )}
+                </span>
+
+
+                ${
+                    member.phone
+                        ? `
+                            <a
+                                href="tel:${phone}"
+                                style="
+                                    color:var(--accent);
+                                    text-decoration:none;
+                                    margin-top:6px;
+                                    display:block;
+                                "
+                            >
+                                ${phone}
+                            </a>
+                        `
+                        : ""
+                }
+
+
+                <button
+                    type="button"
+                    class="secondary-button danger"
+                    style="margin-top:10px;"
+                >
+                    Delete
+                </button>
+            `;
+
+
+            card.querySelector(
+                "button"
+            ).onclick =
+                () => {
+
+                    openConfirm(
+                        "Delete Member?",
+                        `Delete ${member.name}?`,
+                        () => {
+
+                            family =
+                                family.filter(
+                                    item =>
+                                        item.id !==
+                                        member.id
+                                );
+
+
+                            save(
+                                "gharLinkFamily",
+                                family
                             );
 
-                        save(
-                            "gharLinkFamily",
-                            family
-                        );
 
-                        openFamily();
+                            openFamily();
 
-                        showMessage(
-                            "Family member deleted."
-                        );
-                    }
-                );
-            };
 
-        list.appendChild(card);
-    });
+                            showMessage(
+                                "Family member deleted."
+                            );
+                        }
+                    );
+                };
+
+
+            list.appendChild(
+                card
+            );
+        }
+    );
 }
 
 
@@ -2317,12 +3681,17 @@ function renderFamily() {
    NOTES
 ========================================================= */
 
-function openNotes(editNote = null) {
+function openNotes(
+    editNote = null
+) {
 
-    $("detailTitle").textContent =
+    $("detailTitle")
+        .textContent =
         "Notes";
 
-    $("detailContent").innerHTML = `
+
+    $("detailContent")
+        .innerHTML = `
 
         <form id="noteForm">
 
@@ -2336,44 +3705,30 @@ function openNotes(editNote = null) {
                 }"
             >
 
-            <div class="form-group">
 
-                <label>Title</label>
+            <label>
+                Title
+            </label>
 
-                <input
-                    id="noteTitle"
-                    type="text"
-                    placeholder="Note title"
-                    value="${
-                        editNote
-                            ? escapeHTML(
-                                editNote.title
-                            )
-                            : ""
-                    }"
-                    required
-                >
+            <input
+                id="noteTitle"
+                type="text"
+                placeholder="Note title"
+                required
+            >
 
-            </div>
 
-            <div class="form-group">
+            <label>
+                Note
+            </label>
 
-                <label>Note</label>
+            <textarea
+                id="noteContent"
+                rows="5"
+                placeholder="Write your note..."
+                required
+            ></textarea>
 
-                <textarea
-                    id="noteContent"
-                    rows="5"
-                    placeholder="Write your note..."
-                    required
-                >${
-                    editNote
-                        ? escapeHTML(
-                            editNote.content
-                        )
-                        : ""
-                }</textarea>
-
-            </div>
 
             <button
                 type="submit"
@@ -2388,33 +3743,58 @@ function openNotes(editNote = null) {
 
         </form>
 
+
         <div style="height:18px"></div>
+
 
         <div id="notesList"></div>
     `;
 
+
+    if (editNote) {
+
+        $("noteTitle")
+            .value =
+            editNote.title;
+
+
+        $("noteContent")
+            .value =
+            editNote.content;
+    }
+
+
     renderNotes();
 
-    $("noteForm").onsubmit =
+
+    $("noteForm")
+        .onsubmit =
         event => {
 
             event.preventDefault();
+
 
             const title =
                 $("noteTitle")
                     .value
                     .trim();
 
+
             const content =
                 $("noteContent")
                     .value
                     .trim();
 
+
             const editingId =
                 $("editingNoteId")
                     .value;
 
-            if (!title || !content) {
+
+            if (
+                !title ||
+                !content
+            ) {
 
                 showMessage(
                     "Please complete the note.",
@@ -2424,14 +3804,18 @@ function openNotes(editNote = null) {
                 return;
             }
 
+
             if (editingId) {
 
                 const note =
                     notes.find(
-                        n =>
-                            n.id ===
-                            Number(editingId)
+                        item =>
+                            item.id ===
+                            Number(
+                                editingId
+                            )
                     );
+
 
                 if (note) {
 
@@ -2441,6 +3825,7 @@ function openNotes(editNote = null) {
                     note.content =
                         content;
                 }
+
 
                 showMessage(
                     "Note updated."
@@ -2458,25 +3843,32 @@ function openNotes(editNote = null) {
                     content,
 
                     createdAt:
-                        new Date().toISOString()
+                        new Date()
+                            .toISOString()
+
                 });
+
 
                 showMessage(
                     "Note added."
                 );
             }
 
+
             save(
                 "gharLinkNotes",
                 notes
             );
 
+
             openNotes();
         };
 
-    $("detailModal").classList.add(
-        "show"
-    );
+
+    $("detailModal")
+        .classList.add(
+            "show"
+        );
 }
 
 
@@ -2485,7 +3877,9 @@ function renderNotes() {
     const list =
         $("notesList");
 
+
     if (!list) return;
+
 
     if (!notes.length) {
 
@@ -2494,7 +3888,6 @@ function renderNotes() {
             <div class="empty-card">
 
                 <div>
-
                     <strong>
                         No notes yet
                     </strong>
@@ -2502,7 +3895,6 @@ function renderNotes() {
                     <p>
                         Create your first note above.
                     </p>
-
                 </div>
 
             </div>
@@ -2511,95 +3903,114 @@ function renderNotes() {
         return;
     }
 
-    list.innerHTML =
-        "";
 
-    notes.forEach(note => {
+    list.innerHTML = "";
 
-        const card =
-            document.createElement(
-                "div"
-            );
 
-        card.className =
-            "detail-box";
+    notes.forEach(
+        note => {
 
-        card.innerHTML = `
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-            <strong>
-                ${escapeHTML(
-                    note.title
-                )}
-            </strong>
 
-            <span>
-                ${escapeHTML(
-                    note.content
-                )}
-            </span>
+            card.className =
+                "detail-box";
 
-            <div style="
-                display:flex;
-                gap:8px;
-                margin-top:12px;
-            ">
 
-                <button
-                    type="button"
-                    class="secondary-button"
-                >
-                    Edit
-                </button>
+            card.innerHTML = `
 
-                <button
-                    type="button"
-                    class="secondary-button danger"
-                >
-                    Delete
-                </button>
+                <strong>
+                    ${escapeHTML(
+                        note.title
+                    )}
+                </strong>
 
-            </div>
-        `;
+                <span>
+                    ${escapeHTML(
+                        note.content
+                    )}
+                </span>
 
-        const buttons =
-            card.querySelectorAll(
-                "button"
-            );
 
-        buttons[0].onclick =
-            () => openNotes(note);
+                <div style="
+                    display:flex;
+                    gap:8px;
+                    margin-top:12px;
+                ">
 
-        buttons[1].onclick =
-            () => {
+                    <button
+                        type="button"
+                        class="secondary-button"
+                    >
+                        Edit
+                    </button>
 
-                openConfirm(
-                    "Delete Note?",
-                    `Delete "${note.title}"?`,
-                    () => {
 
-                        notes =
-                            notes.filter(
-                                n =>
-                                    n.id !==
-                                    note.id
+                    <button
+                        type="button"
+                        class="secondary-button danger"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+            `;
+
+
+            const buttons =
+                card.querySelectorAll(
+                    "button"
+                );
+
+
+            buttons[0].onclick =
+                () =>
+                    openNotes(
+                        note
+                    );
+
+
+            buttons[1].onclick =
+                () => {
+
+                    openConfirm(
+                        "Delete Note?",
+                        `Delete "${note.title}"?`,
+                        () => {
+
+                            notes =
+                                notes.filter(
+                                    item =>
+                                        item.id !==
+                                        note.id
+                                );
+
+
+                            save(
+                                "gharLinkNotes",
+                                notes
                             );
 
-                        save(
-                            "gharLinkNotes",
-                            notes
-                        );
 
-                        openNotes();
+                            openNotes();
 
-                        showMessage(
-                            "Note deleted."
-                        );
-                    }
-                );
-            };
 
-        list.appendChild(card);
-    });
+                            showMessage(
+                                "Note deleted."
+                            );
+                        }
+                    );
+                };
+
+
+            list.appendChild(
+                card
+            );
+        }
+    );
 }
 
 
@@ -2609,38 +4020,39 @@ function renderNotes() {
 
 function openLinks() {
 
-    $("detailTitle").textContent =
+    $("detailTitle")
+        .textContent =
         "Useful Links";
 
-    $("detailContent").innerHTML = `
+
+    $("detailContent")
+        .innerHTML = `
 
         <form id="linkForm">
 
-            <div class="form-group">
+            <label>
+                Name
+            </label>
 
-                <label>Name</label>
+            <input
+                id="linkName"
+                type="text"
+                placeholder="Website name"
+                required
+            >
 
-                <input
-                    id="linkName"
-                    type="text"
-                    placeholder="Website name"
-                    required
-                >
 
-            </div>
+            <label>
+                URL
+            </label>
 
-            <div class="form-group">
+            <input
+                id="linkURL"
+                type="url"
+                placeholder="https://example.com"
+                required
+            >
 
-                <label>URL</label>
-
-                <input
-                    id="linkURL"
-                    type="url"
-                    placeholder="https://example.com"
-                    required
-                >
-
-            </div>
 
             <button
                 type="submit"
@@ -2651,29 +4063,40 @@ function openLinks() {
 
         </form>
 
+
         <div style="height:18px"></div>
+
 
         <div id="linksList"></div>
     `;
 
+
     renderLinks();
 
-    $("linkForm").onsubmit =
+
+    $("linkForm")
+        .onsubmit =
         event => {
 
             event.preventDefault();
+
 
             const name =
                 $("linkName")
                     .value
                     .trim();
 
-            let url =
+
+            const url =
                 $("linkURL")
                     .value
                     .trim();
 
-            if (!name || !url) {
+
+            if (
+                !name ||
+                !url
+            ) {
 
                 showMessage(
                     "Please complete both fields.",
@@ -2683,9 +4106,14 @@ function openLinks() {
                 return;
             }
 
+
             if (
-                !url.startsWith("http://") &&
-                !url.startsWith("https://")
+                !url.startsWith(
+                    "http://"
+                ) &&
+                !url.startsWith(
+                    "https://"
+                )
             ) {
 
                 showMessage(
@@ -2696,6 +4124,7 @@ function openLinks() {
                 return;
             }
 
+
             links.unshift({
 
                 id:
@@ -2704,25 +4133,33 @@ function openLinks() {
                 name,
 
                 url
+
             });
+
 
             save(
                 "gharLinkLinks",
                 links
             );
 
-            $("linkForm").reset();
+
+            $("linkForm")
+                .reset();
+
 
             renderLinks();
+
 
             showMessage(
                 "Useful link added."
             );
         };
 
-    $("detailModal").classList.add(
-        "show"
-    );
+
+    $("detailModal")
+        .classList.add(
+            "show"
+        );
 }
 
 
@@ -2731,7 +4168,9 @@ function renderLinks() {
     const list =
         $("linksList");
 
+
     if (!list) return;
+
 
     if (!links.length) {
 
@@ -2740,7 +4179,6 @@ function renderLinks() {
             <div class="empty-card">
 
                 <div>
-
                     <strong>
                         No useful links
                     </strong>
@@ -2748,7 +4186,6 @@ function renderLinks() {
                     <p>
                         Add an important website above.
                     </p>
-
                 </div>
 
             </div>
@@ -2757,88 +4194,102 @@ function renderLinks() {
         return;
     }
 
-    list.innerHTML =
-        "";
 
-    links.forEach(link => {
+    list.innerHTML = "";
 
-        const card =
-            document.createElement(
-                "div"
-            );
 
-        card.className =
-            "detail-box";
+    links.forEach(
+        link => {
 
-        card.innerHTML = `
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-            <strong>
-                ${escapeHTML(
-                    link.name
-                )}
-            </strong>
 
-            <a
-                href="${escapeHTML(
-                    link.url
-                )}"
-                target="_blank"
-                rel="noopener noreferrer"
-                style="
-                    color:var(--accent);
-                    text-decoration:none;
-                    word-break:break-all;
-                    display:block;
-                    margin-top:6px;
-                "
-            >
-                ${escapeHTML(
-                    link.url
-                )}
-            </a>
+            card.className =
+                "detail-box";
 
-            <button
-                type="button"
-                class="secondary-button danger"
-                style="margin-top:10px;"
-            >
-                Delete
-            </button>
-        `;
 
-        card.querySelector(
-            "button"
-        ).onclick =
-            () => {
+            card.innerHTML = `
 
-                openConfirm(
-                    "Delete Link?",
-                    `Delete "${link.name}"?`,
-                    () => {
+                <strong>
+                    ${escapeHTML(
+                        link.name
+                    )}
+                </strong>
 
-                        links =
-                            links.filter(
-                                l =>
-                                    l.id !==
-                                    link.id
+
+                <a
+                    href="${escapeHTML(
+                        link.url
+                    )}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="
+                        color:var(--accent);
+                        text-decoration:none;
+                        word-break:break-all;
+                        display:block;
+                        margin-top:6px;
+                    "
+                >
+                    ${escapeHTML(
+                        link.url
+                    )}
+                </a>
+
+
+                <button
+                    type="button"
+                    class="secondary-button danger"
+                    style="margin-top:10px;"
+                >
+                    Delete
+                </button>
+            `;
+
+
+            card.querySelector(
+                "button"
+            ).onclick =
+                () => {
+
+                    openConfirm(
+                        "Delete Link?",
+                        `Delete "${link.name}"?`,
+                        () => {
+
+                            links =
+                                links.filter(
+                                    item =>
+                                        item.id !==
+                                        link.id
+                                );
+
+
+                            save(
+                                "gharLinkLinks",
+                                links
                             );
 
-                        save(
-                            "gharLinkLinks",
-                            links
-                        );
 
-                        openLinks();
+                            openLinks();
 
-                        showMessage(
-                            "Link deleted."
-                        );
-                    }
-                );
-            };
 
-        list.appendChild(card);
-    });
+                            showMessage(
+                                "Link deleted."
+                            );
+                        }
+                    );
+                };
+
+
+            list.appendChild(
+                card
+            );
+        }
+    );
 }
 
 
@@ -2848,16 +4299,24 @@ function renderLinks() {
 
 function openSettings() {
 
-    $("detailTitle").textContent =
+    $("detailTitle")
+        .textContent =
         "Settings";
 
-    $("detailContent").innerHTML = `
+
+    $("detailContent")
+        .innerHTML = `
 
         <div class="settings-section">
 
             <div class="section-title">
-                <h2>Appearance</h2>
+
+                <h2>
+                    Appearance
+                </h2>
+
             </div>
+
 
             <div class="theme-options">
 
@@ -2880,6 +4339,7 @@ function openSettings() {
                     </span>
 
                 </button>
+
 
                 <button
                     type="button"
@@ -2906,31 +4366,49 @@ function openSettings() {
         </div>
     `;
 
-    $("lightThemeButton").onclick =
-        () => setTheme("light");
 
-    $("darkThemeButton").onclick =
-        () => setTheme("dark");
+    $("lightThemeButton")
+        .onclick =
+        () =>
+            setTheme(
+                "light"
+            );
 
-    $("detailModal").classList.add(
-        "show"
-    );
+
+    $("darkThemeButton")
+        .onclick =
+        () =>
+            setTheme(
+                "dark"
+            );
+
+
+    $("detailModal")
+        .classList.add(
+            "show"
+        );
 }
 
 
-function setTheme(newTheme) {
+function setTheme(
+    newTheme
+) {
 
     theme =
         newTheme;
+
 
     localStorage.setItem(
         "gharLinkTheme",
         theme
     );
 
+
     applyTheme();
 
+
     openSettings();
+
 
     showMessage(
         theme === "dark"
@@ -2942,15 +4420,18 @@ function setTheme(newTheme) {
 
 function applyTheme() {
 
-    document.body.classList.toggle(
-        "dark",
-        theme === "dark"
-    );
+    document.body
+        .classList.toggle(
+            "dark",
+            theme === "dark"
+        );
+
 
     const meta =
         document.querySelector(
             'meta[name="theme-color"]'
         );
+
 
     if (meta) {
 
@@ -2963,6 +4444,7 @@ function applyTheme() {
     }
 }
 
+
 applyTheme();
 
 
@@ -2972,16 +4454,20 @@ applyTheme();
 
 function openAbout() {
 
-    $("detailTitle").textContent =
+    $("detailTitle")
+        .textContent =
         "About";
 
-    $("detailContent").innerHTML = `
+
+    $("detailContent")
+        .innerHTML = `
 
         <div class="about-card">
 
             <h3>
                 GharLink
             </h3>
+
 
             <p>
                 GharLink is a simple family utility
@@ -2990,16 +4476,20 @@ function openAbout() {
                 contacts and useful links in one place.
             </p>
 
+
             <div class="about-divider"></div>
+
 
             <p class="developer-name">
                 Sayyed Sahil
             </p>
 
+
             <p>
                 BCA Student — Designed & Developed
                 this project using HTML, CSS & JavaScript.
             </p>
+
 
             <p>
                 Built as a learning project with a
@@ -3009,9 +4499,11 @@ function openAbout() {
         </div>
     `;
 
-    $("detailModal").classList.add(
-        "show"
-    );
+
+    $("detailModal")
+        .classList.add(
+            "show"
+        );
 }
 
 
@@ -3019,44 +4511,48 @@ function openAbout() {
    DETAIL MODAL CLOSE
 ========================================================= */
 
-$("closeDetailModal").addEventListener(
-    "click",
-    () => {
+$("closeDetailModal")
+    .addEventListener(
+        "click",
+        () => {
 
-        $("detailModal").classList.remove(
-            "show"
-        );
-
-    }
-);
-
-
-$("detailModal").addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
             $("detailModal")
-        ) {
-
-            $("detailModal").classList.remove(
-                "show"
-            );
+                .classList.remove(
+                    "show"
+                );
         }
+    );
 
-    }
-);
+
+$("detailModal")
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                $("detailModal")
+            ) {
+
+                $("detailModal")
+                    .classList.remove(
+                        "show"
+                    );
+            }
+        }
+    );
 
 
 /* =========================================================
    FORMAT MONEY
 ========================================================= */
 
-function formatMoney(value) {
+function formatMoney(
+    value
+) {
 
     return Number(
-        value
+        value || 0
     ).toLocaleString(
         "en-IN",
         {
@@ -3068,20 +4564,43 @@ function formatMoney(value) {
 
 
 /* =========================================================
+   FILE NAME CLEANER
+========================================================= */
+
+function sanitizeFileName(
+    value
+) {
+
+    return String(
+        value || "GharLink-Bill"
+    )
+        .replace(
+            /[<>:"/\\|?*]+/g,
+            "-"
+        )
+        .trim();
+}
+
+
+/* =========================================================
    HTML ESCAPE
 ========================================================= */
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
     const div =
         document.createElement(
             "div"
         );
 
+
     div.textContent =
         String(
             value ?? ""
         );
+
 
     return div.innerHTML;
 }
@@ -3100,3 +4619,4 @@ updateHome();
 showScreen(
     "homeScreen"
 );
+

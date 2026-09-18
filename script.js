@@ -2537,14 +2537,20 @@ async function downloadBillPDF(
         );
 
 
+        // Render at a high resolution so the exported PDF stays sharper
+        // when zoomed. The previous scale of 2 caused visible pixelation.
+        const renderScale = Math.min(4, Math.max(3, window.devicePixelRatio || 1));
+
         const canvas =
             await html2canvas(
                 wrapper,
                 {
-                    scale: 2,
+                    scale: renderScale,
                     backgroundColor: "#ffffff",
                     useCORS: true,
+                    allowTaint: false,
                     logging: false,
+                    imageTimeout: 0,
                     width: wrapper.scrollWidth,
                     height: wrapper.scrollHeight,
                     windowWidth: wrapper.scrollWidth,
@@ -2580,7 +2586,7 @@ async function downloadBillPDF(
             210,
             297,
             undefined,
-            "FAST"
+            "NONE"
         );
 
 

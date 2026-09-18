@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "GharLink",
-  "short_name": "GharLink",
-  "description": "GharLink - Everything. One Place.",
+  "name": "Your'z Hub",
+  "short_name": "Your'z Hub",
+  "description": "Your'z Hub - Everything. One Place.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

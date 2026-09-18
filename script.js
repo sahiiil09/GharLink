@@ -1,19 +1,9 @@
-/* =========================================================
-   GHARLINK
-   Complete App JavaScript
-
-   No alert()
-   No confirm()
-   No prompt()
-========================================================= */
 
 const $ = (id) =>
     document.getElementById(id);
 
 
-/* =========================================================
-   STORAGE
-========================================================= */
+/*  STORAGE */
 
 function loadData(key, fallback = []) {
 
@@ -60,9 +50,7 @@ let currentProducts = [];
 let editingBillId = null;
 
 
-/* =========================================================
-   SAVE
-========================================================= */
+/*  SAVE */
 
 function save(key, value) {
 
@@ -73,9 +61,7 @@ function save(key, value) {
 }
 
 
-/* =========================================================
-   SMALL MESSAGE
-========================================================= */
+/*  SMALL MESSAGE */
 
 function showMessage(
     message,
@@ -186,9 +172,7 @@ function showMessage(
 }
 
 
-/* =========================================================
-   CUSTOM CONFIRM
-========================================================= */
+/*  CUSTOM CONFIRM */
 
 function openConfirm(
     title,
@@ -276,9 +260,7 @@ function openConfirm(
 }
 
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+/*  NAVIGATION */
 
 const screens =
     document.querySelectorAll(
@@ -376,9 +358,7 @@ quickCards.forEach(
 );
 
 
-/* =========================================================
-   DATE
-========================================================= */
+/*  DATE */
 
 function updateDate() {
 
@@ -402,9 +382,7 @@ function updateDate() {
 updateDate();
 
 
-/* =========================================================
-   TASKS
-========================================================= */
+/* TASKS */
 
 function openTaskModal(
     task = null
@@ -1052,9 +1030,7 @@ function updateTaskCounts() {
 }
 
 
-/* =========================================================
-   BILLS
-========================================================= */
+/*  BILLS */
 
 function resetBillForm() {
 
@@ -1366,9 +1342,7 @@ function getBillTotal() {
 }
 
 
-/* =========================================================
-   BILL PRODUCTS UI
-========================================================= */
+/*  BILL PRODUCTS UI */
 
 function renderBillProducts() {
 
@@ -1470,9 +1444,7 @@ function renderBillProducts() {
 }
 
 
-/* =========================================================
-   SAVE / UPDATE BILL
-========================================================= */
+/* SAVE / UPDATE BILL */
 
 $("billForm")
     .addEventListener(
@@ -1632,9 +1604,7 @@ $("billForm")
     );
 
 
-/* =========================================================
-   BILLS RENDER
-========================================================= */
+/* BILLS RENDER */
 
 function renderBills() {
 
@@ -1820,9 +1790,7 @@ function updateBillStats() {
 }
 
 
-/* =========================================================
-   BILL DETAILS
-========================================================= */
+/* BILL DETAILS */
 
 function openBillDetails(
     bill
@@ -2013,6 +1981,19 @@ function openBillDetails(
                 PDF
             </button>
 
+
+            <button
+                type="button"
+                class="secondary-button"
+                id="shareBillButton"
+            >
+                <svg>
+                    <use href="#icon-share"></use>
+                </svg>
+
+                Share
+            </button>
+
         </div>
 
 
@@ -2066,6 +2047,15 @@ function openBillDetails(
             );
 
 
+    $("shareBillButton")
+        .onclick =
+        () =>
+            downloadBillPDF(
+                bill.id,
+                "share"
+            );
+
+
     $("printBillButton")
         .onclick =
         () =>
@@ -2075,9 +2065,7 @@ function openBillDetails(
 }
 
 
-/* =========================================================
-   DELETE BILL
-========================================================= */
+/*  DELETE BILL */
 
 function deleteBill(id) {
 
@@ -2122,9 +2110,7 @@ function deleteBill(id) {
 }
 
 
-/* =========================================================
-   PDF — HELPERS
-========================================================= */
+/*  PDF — HELPERS */
 
 /*
    This creates a real PDF file directly in JavaScript.
@@ -2370,12 +2356,11 @@ endstream
 }
 
 
-/* =========================================================
-   DOWNLOAD BILL PDF
-========================================================= */
+/* DOWNLOAD BILL PDF */
 
 function downloadBillPDF(
-    id
+    id,
+    mode = "download"
 ) {
 
     const bill =
@@ -2472,7 +2457,7 @@ function downloadBillPDF(
 
     lines.push({
         text:
-            "------------------------------------------------------------",
+            "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
         x: 40,
         y: 675,
         size: 9,
@@ -2604,7 +2589,7 @@ function downloadBillPDF(
 
     lines.push({
         text:
-            "------------------------------------------------------------",
+            "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
         x: 40,
         y: rowY - 4,
         size: 9,
@@ -2650,6 +2635,73 @@ function downloadBillPDF(
         );
 
 
+    const fileName =
+        `${sanitizeFileName(
+            bill.billNumber
+        )}.pdf`;
+
+
+    if (
+        mode === "share" &&
+        navigator.share &&
+        navigator.canShare
+    ) {
+
+        const file =
+            new File(
+                [blob],
+                fileName,
+                {
+                    type: "application/pdf"
+                }
+            );
+
+
+        if (
+            navigator.canShare({
+                files: [file]
+            })
+        ) {
+
+            navigator.share({
+                title: fileName,
+                text: "GharLink bill",
+                files: [file]
+            })
+                .then(() => {
+                    showMessage(
+                        "Share menu opened."
+                    );
+                })
+                .catch(error => {
+                    if (
+                        error &&
+                        error.name === "AbortError"
+                    ) return;
+
+                    downloadPDFBlob(
+                        blob,
+                        fileName
+                    );
+                });
+
+            return;
+        }
+    }
+
+
+    downloadPDFBlob(
+        blob,
+        fileName
+    );
+}
+
+
+function downloadPDFBlob(
+    blob,
+    fileName
+) {
+
     const url =
         URL.createObjectURL(
             blob
@@ -2662,41 +2714,24 @@ function downloadBillPDF(
         );
 
 
-    link.href =
-        url;
-
-
-    link.download =
-        `${sanitizeFileName(
-            bill.billNumber
-        )}.pdf`;
-
-
-    link.style.display =
-        "none";
+    link.href = url;
+    link.download = fileName;
+    link.style.display = "none";
 
 
     document.body.appendChild(
         link
     );
 
-
     link.click();
-
-
     link.remove();
 
 
-    setTimeout(
-        () => {
-
-            URL.revokeObjectURL(
-                url
-            );
-
-        },
-        1000
-    );
+    setTimeout(() => {
+        URL.revokeObjectURL(
+            url
+        );
+    }, 1000);
 
 
     showMessage(
@@ -2705,9 +2740,7 @@ function downloadBillPDF(
 }
 
 
-/* =========================================================
-   PRINT BILL
-========================================================= */
+/* PRINT BILL */
 
 function printBill(
     id
@@ -3004,9 +3037,7 @@ function printBill(
 }
 
 
-/* =========================================================
-   HOME
-========================================================= */
+/* HOME */
 
 function updateHome() {
 
@@ -3048,9 +3079,7 @@ function updateHome() {
 }
 
 
-/* =========================================================
-   HOME TASKS
-========================================================= */
+/* HOME TASKS */
 
 function renderHomeTasks() {
 
@@ -3175,9 +3204,7 @@ function renderHomeTasks() {
 }
 
 
-/* =========================================================
-   HOME BILLS
-========================================================= */
+/* HOME BILLS */
 
 function renderHomeBills() {
 
@@ -3316,9 +3343,7 @@ function renderHomeBills() {
 }
 
 
-/* =========================================================
-   MORE
-========================================================= */
+/* MORE */
 
 document
     .querySelectorAll(
@@ -3385,9 +3410,7 @@ function openMoreSection(
 }
 
 
-/* =========================================================
-   FAMILY
-========================================================= */
+/*  FAMILY */
 
 function openFamily() {
 
@@ -3677,9 +3700,7 @@ function renderFamily() {
 }
 
 
-/* =========================================================
-   NOTES
-========================================================= */
+/* NOTES */
 
 function openNotes(
     editNote = null
@@ -4014,9 +4035,7 @@ function renderNotes() {
 }
 
 
-/* =========================================================
-   USEFUL LINKS
-========================================================= */
+/*  USEFUL LINKS */
 
 function openLinks() {
 
@@ -4293,9 +4312,7 @@ function renderLinks() {
 }
 
 
-/* =========================================================
-   SETTINGS
-========================================================= */
+/* SETTINGS */
 
 function openSettings() {
 
@@ -4448,9 +4465,7 @@ function applyTheme() {
 applyTheme();
 
 
-/* =========================================================
-   ABOUT
-========================================================= */
+/* ABOUT */
 
 function openAbout() {
 
@@ -4507,9 +4522,7 @@ function openAbout() {
 }
 
 
-/* =========================================================
-   DETAIL MODAL CLOSE
-========================================================= */
+/* DETAIL MODAL CLOSE */
 
 $("closeDetailModal")
     .addEventListener(
@@ -4543,9 +4556,7 @@ $("detailModal")
     );
 
 
-/* =========================================================
-   FORMAT MONEY
-========================================================= */
+/* FORMAT MONEY */
 
 function formatMoney(
     value
@@ -4563,9 +4574,7 @@ function formatMoney(
 }
 
 
-/* =========================================================
-   FILE NAME CLEANER
-========================================================= */
+/* FILE NAME CLEANER */
 
 function sanitizeFileName(
     value
@@ -4582,9 +4591,7 @@ function sanitizeFileName(
 }
 
 
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
+/* HTML ESCAPE */
 
 function escapeHTML(
     value
@@ -4606,9 +4613,7 @@ function escapeHTML(
 }
 
 
-/* =========================================================
-   START APP
-========================================================= */
+/* START APP */
 
 renderTasks();
 
@@ -4619,4 +4624,3 @@ updateHome();
 showScreen(
     "homeScreen"
 );
-

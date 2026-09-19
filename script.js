@@ -4624,3 +4624,69 @@ updateHome();
 showScreen(
     "homeScreen"
 );
+
+/* CREATOR INTRO — SHOW EVERY TIME */
+
+const creatorIntroModal =
+    document.getElementById(
+        "creatorIntroModal"
+    );
+
+const creatorIntroContinue =
+    document.getElementById(
+        "creatorIntroContinue"
+    );
+
+
+function openCreatorIntro() {
+
+    if (!creatorIntroModal) return;
+
+    creatorIntroModal.classList.add(
+        "show"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+function closeCreatorIntro() {
+
+    if (!creatorIntroModal) return;
+
+    creatorIntroModal.classList.remove(
+        "show"
+    );
+
+    document.body.style.overflow =
+        "";
+}
+
+
+/* SHOW EVERY TIME WEBSITE OPENS */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        setTimeout(() => {
+
+            openCreatorIntro();
+
+        }, 350);
+
+    }
+);
+
+
+/* CONTINUE BUTTON */
+
+if (creatorIntroContinue) {
+
+    creatorIntroContinue.addEventListener(
+        "click",
+        closeCreatorIntro
+    );
+
+}
